@@ -55,9 +55,10 @@ const detectCode = () => {
     if (newCode === false){
         console.log('in new code ' + newCode)
         newCode = true;
-        for (const barcode of codes)  {
-            console.log(barcode.rawValue);
-        }
+        console.log(codes);
+        // for (const barcode of codes)  {
+        //     console.log(barcode.rawValue);
+        // }
     }
 
   }).catch(err => {
