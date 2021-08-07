@@ -25,7 +25,7 @@
 
 const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
 const video = document.getElementById('video');
-
+let newCode = false;
 // Check for a camera
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   const constraints = {
