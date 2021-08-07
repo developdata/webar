@@ -22,62 +22,8 @@
       </div>
     </div>
     <script>
-// let codes = [];
-// const seen = new Set();
-// Create new barcode detector
+
 const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-
-// // Define custom element
-// customElements.define('scaned-item', class extends HTMLElement {
-//   constructor() {
-//     super();
-//     const template = document.querySelector('#scaned-item').content;
-//     const shadowRoot = this.attachShadow({mode: 'open'}).appendChild(template.cloneNode(true));
-//   };
-// });
-
-// // Codes proxy/state
-// const codesProxy = new Proxy(codes, {
-//   set (target, prop, value, receiver) {
-//     // Throw err if value is a number
-//     // Stops from saving undefined codes
-//     if (typeof value === 'number') throw value;
-    
-//     target.push(value);
-
-//     // Check if code has already been scanned
-//     target = target.filter((c) => {
-//       if (c.rawValue !== window.barcodeVal) return c;
-//       const d = seen.has(c.rawValue);
-//       seen.add(c.rawValue);
-//       return !d;
-//     })
-    
-//     // Select the container scanned
-//     const scanned = document.querySelector('#scanned')
-//     const temp = document.createElement('scaned-item')
-//     const format = document.createElement('span')
-//     const rawValue = document.createElement('span')
-
-//     // Goes into the custom elements formate slot
-//     format.setAttribute('slot', 'format');
-//     format.innerHTML = value.format;
-    
-//     // Goes into the custom elements raw slot 
-//     rawValue.setAttribute('slot', 'raw');
-//     rawValue.innerHTML = value.rawValue;
-
-//     // Append elements to custom element
-//     temp.appendChild(rawValue);
-//     temp.appendChild(format);
-
-//     // Append Custom element to scanned container
-//     scanned.appendChild(temp);
-//     return true;
-//   }
-// });
-
-// Get video element 
 const video = document.getElementById('video');
 
 // Check for a camera
@@ -92,8 +38,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 }
 
 
-
-
 // Detect code function 
 const detectCode = () => {
   barcodeDetector.detect(video).then(codes => {
@@ -101,22 +45,21 @@ const detectCode = () => {
     // if (codes.length === 0) return drawCodePath({});
     if (codes.length === 0){
         console.log('no code');
+        if (newCode === true){
+            newCode = false;
+        }
+        return;
     }
-    
-    for (const barcode of codes)  {
-      console.log(barcode)
-      // Draw outline
-    //   drawCodePath(barcode);
-      
-      // Code in seen set then exit loop 
-    //   if (seen.has(barcode.rawValue)) return;
 
-      // Save barcode to window to use later on
-      // then push to the codes proxy
-    //   window.barcodeVal = barcode.rawValue;
-    //   codesProxy.push(barcode);
+    if (newCode === false){
+        newCode = true;
+        for (const barcode of codes)  {
+            console.log(barcode)
 
+
+        }
     }
+
   }).catch(err => {
     console.error(err);
   })
