@@ -44,17 +44,19 @@ const detectCode = () => {
     // If no codes exit function and clear canvas
     // if (codes.length === 0) return drawCodePath({});
     if (codes.length === 0){
-        console.log('no code');
+        // console.log('no code');
         if (newCode === true){
             newCode = false;
         }
+        console.log('in code length 0 ' + newCode)
         return;
     }
 
     if (newCode === false){
+        console.log('in new code ' + newCode)
         newCode = true;
         for (const barcode of codes)  {
-            console.log(barcode)
+            // console.log(barcode)
 
 
         }
