@@ -7,3 +7,9 @@ This project was developed from a [project I found on line](https://aframe.io/bl
 
 ## dinosaure.html
 This file was developed from a [project I found on line](https://aframe.io/blog/webxr-ar-module/), you can see their [code on glitch](https://glitch.com/edit/#!/xr-spinosaurus?path=style.css%3A1%3A0). I made changes so the dinasaur will always appear close to where the person is pointing the camera. In VR mode, if you press the pink box the dinasuar will toggle to appear or disappear. If the camera postion has moved the dinasaur will appear near the new camera position when toggled back on.
+
+## qr.html
+This file was developed from an [online project](https://itnext.io/creating-a-real-time-qr-code-scanner-with-vanilla-javascript-part-1-2-creating-the-scanner-a8934ee8f614) it starts a video and reads a qr code
+
+## ar.html
+This file was developed from a [project I found on line](https://aframe.io/blog/webxr-ar-module/), you can see their [code on glitch](https://glitch.com/edit/#!/xr-spinosaurus?path=style.css%3A1%3A0). It is simplifying the code.
