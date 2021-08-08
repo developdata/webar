@@ -1,0 +1,171 @@
+<!-- Based on the glitch project https://glitch.com/edit/#!/xr-spinosaurus?path=style.css%3A25%3A1 -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple Web AR</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- import the webpage's stylesheet -->
+    <!-- <link rel="stylesheet" href="/styles.css"> -->
+    
+    <script>
+      // WebXR requires HTTPS, so the site doesn't work if someone manually enters
+      // the URL and ends up using HTTP. To work around this, force redirect from
+      // http to https for non-localhost addresses.
+      if (window.location.protocol == "http:" &&
+          window.location.hostname != "localhost" && 
+          window.location.hostname != "127.0.0.1" &&
+          window.location.hostname != "[::1]") {
+        window.location = window.location.href.replace('http:', 'https:');        
+      }
+    </script>    
+    
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.2.0/dist/aframe-environment-component.min.js"></script>
+
+    <script>
+      // Define a few custom components useful for AR mode. While these are somewhat reusable,
+      // I recommend checking if there are officially supported alternatives before copying
+      // these into new projects.
+    
+      // See also https://github.com/aframevr/aframe/pull/4356
+      AFRAME.registerComponent('hide-in-ar-mode', {
+        // Set this object invisible while in AR mode.
+        init: function () {
+          this.el.sceneEl.addEventListener('enter-vr', (ev) => {
+            this.wasVisible = this.el.getAttribute('visible');
+            if (this.el.sceneEl.is('ar-mode')) {
+              this.el.setAttribute('visible', false);
+            }
+          });
+          this.el.sceneEl.addEventListener('exit-vr', (ev) => {
+            if (this.wasVisible) this.el.setAttribute('visible', true);
+          });
+        }
+      });
+      
+      AFRAME.registerComponent('ar-shadows', {
+        // Swap an object's material to a transparent shadows-only material while
+        // in AR mode. Intended for use with a ground plane. The object is also
+        // set visible while in AR mode, this is useful if it's hidden in other
+        // modes due to them using a 3D environment.
+        schema: {
+          opacity: {default: 0.3}
+        },
+        init: function () {
+          this.el.sceneEl.addEventListener('enter-vr', (ev) => {
+            this.wasVisible = this.el.getAttribute('visible');
+            if (this.el.sceneEl.is('ar-mode')) {
+              this.savedMaterial = this.el.object3D.children[0].material;
+              this.el.object3D.children[0].material = new THREE.ShadowMaterial();
+              this.el.object3D.children[0].material.opacity = this.data.opacity;
+              this.el.setAttribute('visible', true);
+            }
+          });
+          this.el.sceneEl.addEventListener('exit-vr', (ev) => {
+            if (this.savedMaterial) {
+              this.el.object3D.children[0].material = this.savedMaterial;
+              this.savedMaterial = null;
+            }
+            if (!this.wasVisible) this.el.setAttribute('visible', false);
+          });
+        }
+      });    
+  </script>
+  </head>  
+  <body>
+
+    <a-scene cursor="rayOrigin: mouse">
+      
+      <a-camera id="cam" position="0 1.2 0">
+        <!-- <a-entity id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.2 0.2 0.2"></a> -->
+
+      </a-camera>
+      
+      <!-- Environment for 2D and VR viewing. It's auto-hidden in AR mode. -->
+      <a-entity environment="preset: forest; lighting: none; shadow: none; lightPosition: 0 2.15 0"
+                hide-in-ar-mode></a-entity>
+      
+      <!-- this creates a wrapper for the centre of rotation of the object to be at the camera  -->
+      <a-entity id="newRotationCentre" position="0 1.2 0">
+          <!-- added -1.2 to the postion as the wrapper brings the objects position right to it -->
+          <a-box id="dino" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+
+      </a-entity>
+
+      <a-entity light="type: ambient; intensity: 0.5;"></a-entity>
+      <a-light type="directional"
+               light="castShadow: true;
+                      shadowMapHeight: 1024;
+                      shadowMapWidth: 1024;
+                      shadowCameraLeft: -7;
+                      shadowCameraRight: 5;
+                      shadowCameraBottom: -5;
+                      shadowCameraTop: 5;"
+               id="light"
+               target="dino"
+               position="-5 3 1.5"></a-light>
+
+    </a-scene>
+
+    <script>
+    
+
+    const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+    const video = document.getElementById('cam');
+    var newCode = false;
+
+        let dino = document.getElementById('dino');
+        let dinoCameraCentre = document.getElementById('newRotationCentre');
+        let mainCamera = document.getElementById('cam');
+        // let inVRToggle = document.getElementById('refresh-button');
+        let toggleDinoVisiblity = false;
+              
+        dino.setAttribute('scale', {x: 0.5, y: 0.5, z: 0.5});
+
+
+        function changeObjectRotation(){
+            let rot = mainCamera.getAttribute('rotation');
+            console.log(rot)
+        }
+
+        const detectCode = () => {
+  barcodeDetector.detect(video).then(codes => {
+    // If no codes exit function and clear canvas
+    // if (codes.length === 0) return drawCodePath({});
+    if (codes.length === 0){
+        // console.log('no code');
+        if (newCode === true){
+            newCode = false;
+        }
+        console.log('in code length 0 ' + newCode)
+        return;
+    }
+
+    if (newCode === false){
+        console.log('in new code ' + newCode)
+        newCode = true;
+        console.log(codes);
+        alert(codes);
+        // for (const barcode of codes)  {
+        //     console.log(barcode.rawValue);
+        // }
+    }
+
+  }).catch(err => {
+    console.error(err);
+  })
+}
+
+// Run detect code function every 100 milliseconds
+setInterval(detectCode, 100);
+
+
+    </script>
+  </body>
+</html>
