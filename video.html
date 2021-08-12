@@ -1,5 +1,4 @@
-<!-- based on this code https://glitch.com/edit/#!/stack-57493298 from this stackoverflow question https://stackoverflow.com/questions/57493298/a-frame-with-device-camera-how-to-see-video-behind-the-a-scene -->
-
+<!-- based on this code https://glitch.com/edit/#!/stack-57493298 from this stackoverflow question https://stackoverflow.com/questions/57493298/a-frame-with-device-camera-how-to-see-video-behind-the-a-scene and from this qr code tutorial from this online tutorial https://itnext.io/creating-a-real-time-qr-code-scanner-with-vanilla-javascript-part-1-2-creating-the-scanner-a8934ee8f614 -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,6 +18,20 @@
     </head>
     <body>
         <video id="webcam" autoplay playsinline></video>
+
+        <a-scene vr-mode-ui="enabled: false">
+            <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
+            <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
+            <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
+            <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
+            <a-entity camera look-controls>
+                <a-entity cursor="fuse: true; fuseTimeout: 500"
+                    position="0 0 -0.6"
+                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                    material="color: blue; shader: flat">
+                </a-entity>
+            </a-entity>
+        </a-scene>
         <script>
             var cameraView;
     
@@ -80,9 +93,9 @@ const detectCode = () => {
         newCode = true;
         console.log(codes);
         alert(codes);
-        // for (const barcode of codes)  {
-        //     console.log(barcode.rawValue);
-        // }
+        for (const barcode of codes)  {
+            console.log(barcode.rawValue);
+        }
     }
 
   }).catch(err => {
