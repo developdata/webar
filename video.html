@@ -60,51 +60,52 @@
 
 
             const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-const video = document.getElementById('webcam');
-var newCode = false;
-// Check for a camera
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  const constraints = {
-    video: true,
-    audio: false
-  };
-  
-  // Start video stream
-  navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
-}
+                const video = document.getElementById('webcam');
+                var newCode = false;
+                // Check for a camera
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                const constraints = {
+                    video: true,
+                    audio: false
+                };
+                
+                // Start video stream
+                navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
+                }
 
 
-// Detect code function 
-const detectCode = () => {
-  barcodeDetector.detect(video).then(codes => {
-    // If no codes exit function and clear canvas
-    // if (codes.length === 0) return drawCodePath({});
-    if (codes.length === 0){
-        // console.log('no code');
-        if (newCode === true){
-            newCode = false;
-        }
-        console.log('in code length 0 ' + newCode)
-        return;
-    }
+                // Detect code function 
+                const detectCode = () => {
+                barcodeDetector.detect(video).then(codes => {
+                    // If no codes exit function and clear canvas
+                    // if (codes.length === 0) return drawCodePath({});
+                    if (codes.length === 0){
+                        // console.log('no code');
+                        if (newCode === true){
+                            newCode = false;
+                        }
+                        console.log('in code length 0 ' + newCode)
+                        return;
+                    }
 
-    if (newCode === false){
-        console.log('in new code ' + newCode)
-        newCode = true;
-        console.log(codes);
-        alert(codes);
-        for (const barcode of codes)  {
-            console.log(barcode.rawValue);
-        }
-    }
+                    if (newCode === false){
+                        console.log('in new code ' + newCode)
+                        newCode = true;
+                        console.log(codes);
+                        alert(codes);
+                        for (const barcode of codes)  {
+                            console.log(barcode.rawValue);
+                            console.log(typeof(barcode.rawValue));
+                        }
+                    }
 
-  }).catch(err => {
-    console.error(err);
-  })
-}
+                }).catch(err => {
+                    console.error(err);
+                })
+                }
 
-// Run detect code function every 100 milliseconds
-setInterval(detectCode, 100);
+                // Run detect code function every 100 milliseconds
+                setInterval(detectCode, 100);
 
             </script>
     </body>
