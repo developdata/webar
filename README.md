@@ -19,5 +19,7 @@ This file was developed from a [project I found on line](https://aframe.io/blog/
 ## video.html
 This file can read a qr code and also uses A-Frame to show 3D objects through the camera into the real scene (AR). It is based on [this code](https://glitch.com/edit/#!/stack-57493298) from this [stackoverflow question](https://stackoverflow.com/questions/57493298/a-frame-with-device-camera-how-to-see-video-behind-the-a-scene) and from this qr code tutorial from this [online tutorial](https://itnext.io/creating-a-real-time-qr-code-scanner-with-vanilla-javascript-part-1-2-creating-the-scanner-a8934ee8f614)
 
+A 3D rectanble will appear in the aqua sphere when a QR code with the data https://example.com/ is registered by the camera.
+
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
