@@ -22,7 +22,7 @@
         <a-scene vr-mode-ui="enabled: false">
             <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
             <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
-            <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
+            <a-sphere id="aqua" cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
             <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
             <a-entity camera look-controls>
                 <a-entity cursor="fuse: true; fuseTimeout: 500"
@@ -91,11 +91,14 @@
                     if (newCode === false){
                         console.log('in new code ' + newCode)
                         newCode = true;
-                        console.log(codes);
+                        // console.log(codes);
                         alert(codes);
                         for (const barcode of codes)  {
                             console.log(barcode.rawValue);
                             console.log(typeof(barcode.rawValue));
+                            if(barcode.rawValue === "https://example.com/"){
+                                console.log("make a change to the AR");
+                            }
                         }
                     }
 
