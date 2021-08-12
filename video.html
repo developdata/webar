@@ -34,6 +34,7 @@
         </a-scene>
         <script>
             var cameraView;
+            var newElement = false;
     
             var constraints = {
                 audio: false,
@@ -98,6 +99,19 @@
                             console.log(typeof(barcode.rawValue));
                             if(barcode.rawValue === "https://example.com/"){
                                 console.log("make a change to the AR");
+                                if(newElement === false){
+                                    newElement = true;
+                                    var sceneEl = document.querySelector('a-scene');
+                                    var entityEl = document.createElement('a-entity');
+                                    entityEl.setAttribute('geometry', {
+                                    primitive: 'box',
+                                    height: 3,
+                                    width: 1,
+                                    color:"aqua"
+                                    });
+                                    entityEl.setAttribute('position', {x: 7, y: 0, z: 7});
+                                    sceneEl.appendChild(entityEl);
+                                }
                             } else {
                                 console.log('not registering the URL')
                             }
