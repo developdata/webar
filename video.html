@@ -1,0 +1,98 @@
+<!-- based on this code https://glitch.com/edit/#!/stack-57493298 from this stackoverflow question https://stackoverflow.com/questions/57493298/a-frame-with-device-camera-how-to-see-video-behind-the-a-scene -->
+
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+    <style>   
+        #webcam {
+            opacity:1;
+            position: fixed;
+            background-size: 100% 100%;
+            top: 0; left: 0; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+        }
+    </style>
+
+    
+    </head>
+    <body>
+        <video id="webcam" autoplay playsinline></video>
+        <script>
+            var cameraView;
+    
+            var constraints = {
+                audio: false,
+                video: {
+                    facingMode: "environment",
+                }
+            };
+    
+            // Access the device camera and stream to cameraView
+            function cameraStart() {
+                cameraView = document.querySelector("#webcam");
+                navigator.mediaDevices
+                    .getUserMedia(constraints)
+                    .then(function(stream) {
+                    cameraView.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error("Oops. Something is broken.", error);
+                });
+            }
+    
+            // Start the video stream when the window loads
+            window.addEventListener("load", cameraStart, false);
+
+
+            const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
+const video = document.getElementById('webcam');
+var newCode = false;
+// Check for a camera
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  const constraints = {
+    video: true,
+    audio: false
+  };
+  
+  // Start video stream
+  navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
+}
+
+
+// Detect code function 
+const detectCode = () => {
+  barcodeDetector.detect(video).then(codes => {
+    // If no codes exit function and clear canvas
+    // if (codes.length === 0) return drawCodePath({});
+    if (codes.length === 0){
+        // console.log('no code');
+        if (newCode === true){
+            newCode = false;
+        }
+        console.log('in code length 0 ' + newCode)
+        return;
+    }
+
+    if (newCode === false){
+        console.log('in new code ' + newCode)
+        newCode = true;
+        console.log(codes);
+        alert(codes);
+        // for (const barcode of codes)  {
+        //     console.log(barcode.rawValue);
+        // }
+    }
+
+  }).catch(err => {
+    console.error(err);
+  })
+}
+
+// Run detect code function every 100 milliseconds
+setInterval(detectCode, 100);
+
+            </script>
+    </body>
+    
