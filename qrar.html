@@ -10,6 +10,17 @@
     
     <!-- import the webpage's stylesheet -->
     <!-- <link rel="stylesheet" href="/styles.css"> -->
+
+    <style>   
+      #webcam {
+          opacity:1;
+          position: fixed;
+          background-size: 100% 100%;
+          top: 0; left: 0; 
+          min-width: 100%; min-height: 100%;
+          width: auto; height: auto;
+      }
+    </style>
     
     <script>
       // WebXR requires HTTPS, so the site doesn't work if someone manually enters
@@ -79,7 +90,7 @@
   </script>
   </head>  
   <body>
-
+    <video id="webcam" autoplay playsinline></video>
     <a-scene cursor="rayOrigin: mouse">
       
       <a-camera id="cam" position="0 1.2 0">
@@ -117,7 +128,7 @@
     
 
     const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-    const video = document.getElementById('cam');
+    const video = document.getElementById('webcam');
     var newCode = false;
 
         let dino = document.getElementById('dino');
@@ -137,9 +148,11 @@
 
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   const constraints = {
-    video: true,
-    audio: false
-  };
+                audio: false,
+                video: {
+                    facingMode: "environment",
+                }
+            };
   
   // Start video stream
   navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
