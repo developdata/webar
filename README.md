@@ -21,5 +21,8 @@ This file can read a qr code and also uses A-Frame to show 3D objects through th
 
 A 3D rectanble will appear in the aqua sphere when a QR code with the data https://example.com/ is registered by the camera.
 
+## arqr.html
+This file brings together the code from video.html and dinosaure.html
+
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
