@@ -166,152 +166,67 @@
                 // };
 
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  const constraints = {
-                audio: false,
-                video: {
-                    facingMode: "environment",
-                }
-            };
+                  const constraints = {
+                                audio: false,
+                                video: {
+                                    facingMode: "environment",
+                                }
+                    };
                 
                 // Start video stream
                 navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
                 }
 
 
-                // Detect code function 
-                const detectCode = () => {
-                barcodeDetector.detect(video).then(codes => {
-                    // If no codes exit function and clear canvas
-                    // if (codes.length === 0) return drawCodePath({});
-                    if (codes.length === 0){
-                        // console.log('no code');
-                        if (newCode === true){
-                            newCode = false;
-                        }
-                        console.log('in code length 0 ' + newCode)
-                        return;
-                    }
+                // const detectCode = () => {
+                // barcodeDetector.detect(video).then(codes => {
+                //     // If no codes exit function and clear canvas
+                //     // if (codes.length === 0) return drawCodePath({});
+                //     if (codes.length === 0){
+                //         // console.log('no code');
+                //         if (newCode === true){
+                //             newCode = false;
+                //         }
+                //         console.log('in code length 0 ' + newCode)
+                //         return;
+                //     }
 
-                    if (newCode === false){
-                        console.log('in new code ' + newCode)
-                        newCode = true;
-                        // console.log(codes);
-                        // alert(codes);
-                        for (const barcode of codes)  {
-                            console.log(barcode.rawValue);
-                            console.log(typeof(barcode.rawValue));
-                            if(barcode.rawValue === "https://example.com/"){
-                                console.log("make a change to the AR");
-                                if(newElement === false){
-                                    newElement = true;
-                                    var sceneEl = document.querySelector('a-scene');
-                                    var entityEl = document.createElement('a-entity');
-                                    entityEl.setAttribute('geometry', {
-                                    primitive: 'box',
-                                    height: 3,
-                                    width: 1,
-                                    color:"aqua"
-                                    });
-                                    entityEl.setAttribute('position', {x: 7, y: 0, z: 7});
-                                    sceneEl.appendChild(entityEl);
-                                }
-                            } else {
-                                console.log('not registering the URL')
-                            }
-                        }
-                    }
+                //     if (newCode === false){
+                //         console.log('in new code ' + newCode)
+                //         newCode = true;
+                //         // console.log(codes);
+                //         // alert(codes);
+                //         for (const barcode of codes)  {
+                //             console.log(barcode.rawValue);
+                //             console.log(typeof(barcode.rawValue));
+                //             if(barcode.rawValue === "https://example.com/"){
+                //                 console.log("make a change to the AR");
+                //                 if(newElement === false){
+                //                     newElement = true;
+                //                     var sceneEl = document.querySelector('a-scene');
+                //                     var entityEl = document.createElement('a-entity');
+                //                     entityEl.setAttribute('geometry', {
+                //                     primitive: 'box',
+                //                     height: 3,
+                //                     width: 1,
+                //                     color:"aqua"
+                //                     });
+                //                     entityEl.setAttribute('position', {x: 7, y: 0, z: 7});
+                //                     sceneEl.appendChild(entityEl);
+                //                 }
+                //             } else {
+                //                 console.log('not registering the URL')
+                //             }
+                //         }
+                //     }
 
-                }).catch(err => {
-                    console.error(err);
-                })
-                }
+                // }).catch(err => {
+                //     console.error(err);
+                // })
+                // }
 
-                // Run detect code function every 100 milliseconds
-                setInterval(detectCode, 100);
+                // // Run detect code function every 100 milliseconds
+                // setInterval(detectCode, 100);
 
             </script>
     </body>
-    
-
-
-
-====================================================
-
-
-
-   
-    
-
-
-
-    
-
-    
-
-    <script>
-    
-
-    // const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-    // const video = document.getElementById('webcam');
-    // var newCode = false;
-
-        // let dino = document.getElementById('dino');
-        // let dinoCameraCentre = document.getElementById('newRotationCentre');
-        // let mainCamera = document.getElementById('cam');
-        // // let inVRToggle = document.getElementById('refresh-button');
-        // let toggleDinoVisiblity = false;
-              
-        // dino.setAttribute('scale', {x: 0.5, y: 0.5, z: 0.5});
-
-
-        // function changeObjectRotation(){
-        //     let rot = mainCamera.getAttribute('rotation');
-        //     console.log(rot)
-        // }
-
-
-  //       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  // const constraints = {
-  //               audio: false,
-  //               video: {
-  //                   facingMode: "environment",
-  //               }
-  //           };
-  
-  // Start video stream
-//   navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
-// }
-
-//         const detectCode = () => {
-//   barcodeDetector.detect(video).then(codes => {
-//     // If no codes exit function and clear canvas
-//     // if (codes.length === 0) return drawCodePath({});
-//     if (codes.length === 0){
-//         // console.log('no code');
-//         if (newCode === true){
-//             newCode = false;
-//         }
-//         console.log('in code length 0 ' + newCode)
-//         return;
-//     }
-
-//     if (newCode === false){
-//         console.log('in new code ' + newCode)
-//         newCode = true;
-//         console.log(codes);
-//         alert(codes);
-//         // for (const barcode of codes)  {
-//         //     console.log(barcode.rawValue);
-//         // }
-//     }
-
-//   }).catch(err => {
-//     console.error(err);
-//   })
-// }
-
-// // Run detect code function every 100 milliseconds
-// setInterval(detectCode, 100);
-
-
-    </script>
