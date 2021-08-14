@@ -20,12 +20,16 @@
 
     <a-scene vr-mode-ui="enabled: false">
         <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
-        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
+        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="red"></a-sphere>
         <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
-        <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
+        <a-sphere id="orange" cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
         <a-entity camera look-controls></a-entity>
     </a-scene>
     <script>
+
+        document.getElementById('orange').addEventListener('click', function () {
+            alert('clicked orange sphere');
+        }, false );
         
         const video = document.getElementById('camera');
         var newElement = false;
@@ -75,14 +79,9 @@
             }
 
             if (newCode === false){
-                console.log('in new code ' + newCode)
                 newCode = true;
-                // console.log(codes);
-                // alert(codes);
                 for (const barcode of codes)  {
-                    
                     console.log(barcode.rawValue);
-                
                     if(barcode.rawValue === "https://example.com/"){
                         console.log("make a change to the AR");
                         if(newElement === false){
