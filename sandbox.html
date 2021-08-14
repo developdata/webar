@@ -12,7 +12,22 @@
             width: auto; height: auto;
         }
     </style>
-
+<script>
+    AFRAME.registerComponent("navclick", {
+  schema: {
+    url: {
+      default: ""
+    }
+  },
+  init: function() {
+    // var data = this.data;
+    var el = this.el;
+    el.addEventListener("click", () => {
+        alert('clicked');
+    });
+  }
+});
+</script>
     
 </head>
 <body>
@@ -20,18 +35,14 @@
 
     <a-scene vr-mode-ui="enabled: false">
         <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
-        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
+        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="red"></a-sphere>
         <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
-        <a-sphere id="orange" cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
+        <a-sphere navclick cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
         <a-entity camera look-controls></a-entity>
     </a-scene>
     <script>
 
-        let test = document.getElementById('orange');
-        alert(test);
-        test.addEventListener('click', function () {
-            alert('clicked orange sphere');
-        }, false );
+
         
         const video = document.getElementById('camera');
         var newElement = false;
