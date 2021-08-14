@@ -1,8 +1,6 @@
-<!-- based on this code https://glitch.com/edit/#!/stack-57493298 from this stackoverflow question https://stackoverflow.com/questions/57493298/a-frame-with-device-camera-how-to-see-video-behind-the-a-scene and from this qr code tutorial from this online tutorial https://itnext.io/creating-a-real-time-qr-code-scanner-with-vanilla-javascript-part-1-2-creating-the-scanner-a8934ee8f614 -->
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script> -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <style>   
         #camera {
@@ -25,18 +23,13 @@
         <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
         <a-sphere id="aqua" cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
         <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
-        <a-entity camera look-controls>
-            <a-entity cursor="fuse: true; fuseTimeout: 500"
-                position="0 0 -0.6"
-                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-                material="color: blue; shader: flat">
-            </a-entity>
-        </a-entity>
+        <a-entity camera look-controls></a-entity>
     </a-scene>
     <script>
-        // var cameraView;
+        
         const video = document.getElementById('camera');
         var newElement = false;
+        var newCode = false;
 
         var constraints = {
             audio: false,
@@ -60,19 +53,12 @@
         // Start the video stream when the window loads
         window.addEventListener("load", cameraStart, false);
 
-
         const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
             
-        var newCode = false;
         // Check for a camera
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        const constraints = {
-            video: true,
-            audio: false
-        };
-        
-        // Start video stream
-        navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
+            // Start video stream
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
         }
         // Detect code function 
         const detectCode = () => {
