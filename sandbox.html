@@ -49,11 +49,11 @@
         <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
 
 
-            <!-- <a-gltf-model src="#tree" position="-7 0 -7" color="#4CC3D9" animation-mixer="" gltf-model="tree.glb" scale="0.72 0.71 0.76" ></a-gltf-model> -->
+            <a-gltf-model src="#tree" position="-7 0 -7" color="#4CC3D9" animation-mixer="" gltf-model="tree.glb" scale="0.72 0.71 0.76" ></a-gltf-model>
 
-            <a-entity id="newRotationCentre" position="0 1.2 0">
+            <!-- <a-entity id="newRotationCentre" position="0 1.2 0">
                 <a-gltf-model id="anim" src="#tree" position="0 0.10068 -3" color="#4CC3D9" animation-mixer="" gltf-model="tree.glb" scale="0.72 0.71 0.76"></a-gltf-model>
-            </a-entity>
+            </a-entity> -->
  
 
         <a-entity id="newRotationCentre" position="0 1.2 0">
@@ -136,8 +136,8 @@
                             entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
 
-                            let rot = video.getAttribute('rotation');
-                            treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
+                            // let rot = video.getAttribute('rotation');
+                            // treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
                             tree.setAttribute("visible",true);
                         }
                     } else {
