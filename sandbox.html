@@ -3,6 +3,8 @@
 <head>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
     <style>   
         #camera {
             opacity:1;
@@ -36,13 +38,22 @@
     <video id="camera" autoplay playsinline></video>
 
     <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse">
+
+        <a-assets>
+            <a-asset-item id="tree" src="tree.glb"></a-asset-item>
+        </a-assets>
+
         <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
         <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
         <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
         <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
+
+        <a-entity id="newRotationCentre" position="0 1.2 0">
+            <a-gltf-model id="anim" src="#tree" position="0 0.10068 -3" color="#4CC3D9" animation-mixer="" gltf-model="tree.glb" scale="0.72 0.71 0.76" visible="false"></a-gltf-model>
+        </a-entity>
+
         <a-entity camera look-controls mouse-cursor>
             <a-entity navclick id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.1 0.1 0.1"></a>
-
         </a-entity>
     </a-scene>
     <script>
@@ -60,6 +71,8 @@
             }
         };
 
+        let tree = document.getElementById('anim');
+        let treeCameraCentre = document.getElementById('newRotationCentre');
         function cameraStart() {
             
             navigator.mediaDevices
@@ -114,6 +127,10 @@
                             });
                             entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
+
+                            let rot = mainCamera.getAttribute('rotation');
+                            treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
+                            tree.setAttribute("visible",true);
                         }
                     } else {
                         console.log('not registering the URL')
