@@ -27,7 +27,7 @@
     // alert('in init function');
     var el = this.el;
     el.addEventListener("click", () => {
-        alert('clicked');
+        alert('clicked again');
     });
   }
 });
@@ -128,7 +128,7 @@
                             entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
 
-                            let rot = mainCamera.getAttribute('rotation');
+                            let rot = video.getAttribute('rotation');
                             treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
                             tree.setAttribute("visible",true);
                         }
