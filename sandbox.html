@@ -21,7 +21,7 @@
     <a-scene vr-mode-ui="enabled: false">
         <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
         <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
-        <a-sphere id="aqua" cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
+        <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
         <a-sphere cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
         <a-entity camera look-controls></a-entity>
     </a-scene>
@@ -91,10 +91,10 @@
                             entityEl.setAttribute('geometry', {
                             primitive: 'box',
                             height: 3,
-                            width: 1,
-                            color:"aqua"
+                            width: 3,
+                            color:'aqua'
                             });
-                            entityEl.setAttribute('position', {x: 7, y: 0, z: 7});
+                            entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
                         }
                     } else {
