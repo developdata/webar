@@ -21,7 +21,7 @@
   },
   init: function() {
     // var data = this.data;
-    alert('in init function');
+    alert('in init function again');
     var el = this.el;
     el.addEventListener("click", () => {
         alert('clicked');
@@ -36,10 +36,10 @@
 
     <a-scene vr-mode-ui="enabled: false">
         <a-sphere cursor-listener position="-7 0 7" radius="1.25" color="yellowgreen"></a-sphere>
-        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="green"></a-sphere>
+        <a-sphere cursor-listener position="-7 0 -7" radius="1.25" color="pink"></a-sphere>
         <a-sphere cursor-listener position="7 0 7" radius="1.25" color="aqua"></a-sphere>
         <a-sphere navclick cursor-listener position="7 0 -7" radius="1.25" color="orange"></a-sphere>
-        <a-entity camera look-controls></a-entity>
+        <a-entity camera look-controls mouse-cursor></a-entity>
     </a-scene>
     <script>
 
