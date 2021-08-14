@@ -113,16 +113,16 @@
                 if (newCode === true){
                     newCode = false;
                 }
-                console.log('in code length 0 ' + newCode)
+                // console.log('in code length 0 ' + newCode)
                 return;
             }
 
             if (newCode === false){
                 newCode = true;
                 for (const barcode of codes)  {
-                    console.log(barcode.rawValue);
+                    // console.log(barcode.rawValue);
                     if(barcode.rawValue === "https://example.com/"){
-                        console.log("make a change to the AR");
+                        // console.log("make a change to the AR");
                         if(newElement === false){
                             newElement = true;
                             var sceneEl = document.querySelector('a-scene');
@@ -136,8 +136,9 @@
                             entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
 
-                            // let rot = video.getAttribute('rotation');
-                            // treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
+                            let rot = video.getAttribute('rotation');
+                            console.log(rot);
+                            treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
                             tree.setAttribute("visible",true);
                         }
                     } else {
