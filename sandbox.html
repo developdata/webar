@@ -27,7 +27,7 @@
     // alert('in init function');
     var el = this.el;
     el.addEventListener("click", () => {
-        alert('clicked');
+        alert('clicked again');
     });
   }
 });
@@ -60,7 +60,7 @@
             <a-gltf-model id="anim" src="#tree" position="0 0.10068 -3" color="#4CC3D9" animation-mixer="" gltf-model="tree.glb" scale="0.72 0.71 0.76" visible="false"></a-gltf-model>
         </a-entity>
 
-        <a-entity camera look-controls mouse-cursor>
+        <a-entity id="aframeCamera" camera look-controls mouse-cursor>
             <a-entity navclick id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.1 0.1 0.1"></a>
         </a-entity>
     </a-scene>
@@ -69,6 +69,7 @@
 
         
         const video = document.getElementById('camera');
+        const aframeCamera = document.getElementById('aframeCamera')
         var newElement = false;
         var newCode = false;
 
@@ -136,7 +137,7 @@
                             entityEl.setAttribute('position', {x: 7, y: 0, z: -7});
                             sceneEl.appendChild(entityEl);
 
-                            let rot = video.getAttribute('rotation');
+                            let rot = aframeCamera.getAttribute('rotation');
                             console.log(rot);
                             treeCameraCentre.setAttribute("rotation", "0 " +  rot.y + " 0");
                             tree.setAttribute("visible",true);
