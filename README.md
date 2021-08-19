@@ -24,5 +24,11 @@ A 3D rectanble will appear in the aqua sphere when a QR code with the data https
 ## sandbox.html
 Tests with AR and QR codes and AI
 
+## aframemodels.html
+This file is to try out 3D models in VR and work out the translations and animations
+
+## tunnel.html
+This file has the tunnel model for AR
+
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
