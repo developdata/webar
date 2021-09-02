@@ -1,225 +1,101 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>QR Code Scanner</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      .wrapper {
-        padding: 0 4rem;
-      }
-      #canvas {
-        position: absolute;
-      }
-      #scanned {
-        display: flex;
-        flex-direction: column;
-        gap:1rem;
-      }
-      #video-wrapper {
-        height: 480px;
-        position: relative;
-        border-radius: 10px;
-        overflow: hidden;
-      }
+<!doctype html>
+<html lang="en">
+<head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+    <style>   
+        #camera {
+            opacity:1;
+            position: fixed;
+            background-size: 100% 100%;
+            top: 0; left: 0; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+        }
     </style>
-  </head>
-  <body>
-    <template id="scaned-item">
-      <style>
-        .wrapper {
-          --gradient-start: #c471ed;
-          --gradient-end: #f7797d;
-          border: none;
-          border-radius: 1rem;
-          padding: 1rem;
-          background: linear-gradient(var(--gradient-start), var(--gradient-end));
-          box-shadow: 0 3px -3px 10px #000;
-        }
-        .wrapper span {
-          font-family: Arial, Helvetica, sans-serif;
-          color: white;
-          display: block;
-        }
-      </style>
-      <div class="wrapper">
-        <span>Value: <slot name="raw"></slot></span>
-        <span>Format: <slot name="format"></slot></span>
-      </div>
-    </template>
-
-    <div class="wrapper">
-      <h1>QR Code Scanner</h1>
-      <div style="display: flex; gap: 1rem">
-        <div id="video-wrapper">
-          <canvas id="canvas" width="640" height="480"></canvas>
-          <video id="video" width="640" height="480" autoplay></video>
-        </div>
-        <div>
-          <h1>Recently Scanned</h1>
-          <div id="scanned"></div>
-        </div>
-      </div>
-    </div>
     <script>
-let codes = [];
-const seen = new Set();
-// Create new barcode detector
-const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
-
-// Define custom element
-customElements.define('scaned-item', class extends HTMLElement {
-  constructor() {
-    super();
-    const template = document.querySelector('#scaned-item').content;
-    const shadowRoot = this.attachShadow({mode: 'open'}).appendChild(template.cloneNode(true));
-  };
-});
-
-// Codes proxy/state
-const codesProxy = new Proxy(codes, {
-  set (target, prop, value, receiver) {
-    // Throw err if value is a number
-    // Stops from saving undefined codes
-    if (typeof value === 'number') throw value;
-    
-    target.push(value);
-
-    // Check if code has already been scanned
-    target = target.filter((c) => {
-      if (c.rawValue !== window.barcodeVal) return c;
-      const d = seen.has(c.rawValue);
-      seen.add(c.rawValue);
-      return !d;
-    })
-    
-    // Select the container scanned
-    const scanned = document.querySelector('#scanned')
-    const temp = document.createElement('scaned-item')
-    const format = document.createElement('span')
-    const rawValue = document.createElement('span')
-
-    // Goes into the custom elements formate slot
-    format.setAttribute('slot', 'format');
-    format.innerHTML = value.format;
-    
-    // Goes into the custom elements raw slot 
-    rawValue.setAttribute('slot', 'raw');
-    rawValue.innerHTML = value.rawValue;
-
-    // Append elements to custom element
-    temp.appendChild(rawValue);
-    temp.appendChild(format);
-
-    // Append Custom element to scanned container
-    scanned.appendChild(temp);
-    return true;
-  }
-});
-
-// Get video element 
-const video = document.getElementById('video');
-
-// Check for a camera
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  const constraints = {
-    video: true,
-    audio: false
-  };
-  
-  // Start video stream
-  navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
-}
-
-// Draw outline to canvas 
-/* --NOTE-- 
-  Some codes will not out line the whole barcode 
-  instead may have a thin line this is because for a lot of 
-  barcodes that is all that is needed.
-
-  if you would like to out line the whole code you can have 
-  a look at using the boundingBox object instead of 
-  the cornerPoints array in this example it is not used 
-  but my edit this to make a square around other codes
-  that do not get outlined :) 
-*/
-const drawCodePath = ({cornerPoints}) => {
-  const canvas = document.querySelector('#canvas');
-  const ctx = canvas.getContext('2d');
-  const strokeGradient = ctx.createLinearGradient(0, 0, canvas.scrollWidth, canvas.scrollHeight);
-  
-  // Exit function and clear canvas if no corner points
-  if (!cornerPoints) return ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Clear canvas for new redraw
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // Create new gradient
-  strokeGradient.addColorStop('0', '#c471ed');
-  strokeGradient.addColorStop('1', '#f7797d');
-
-  // Define stoke styles
-  ctx.strokeStyle = strokeGradient;
-  ctx.lineWidth = 4;
-
-  // Begin draw
-  ctx.beginPath();
-
-  // Draw code outline path
-  for (const [i, {x, y}] of cornerPoints.entries()) {
-    if (i === 0) {
-      // Move x half of the stroke width back 
-      // makes the start and end corner line up
-      ctx.moveTo(x - ctx.lineWidth/2, y);
-      continue;
+        AFRAME.registerComponent("navclick", {
+    init: function() {
+        // var data = this.data;
+        // alert('in init function');
+        var el = this.el;
+        el.addEventListener("click", () => {
+            alert('clicked');
+        });
     }
+    });
+    </script>
+</head>
+  <body>
+    <video id="camera" autoplay playsinline></video>
+    <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse">
+        
+        <a-assets>
+            <a-asset-item id="rails" src="rails2.glb"></a-asset-item>
+          </a-assets>
+        
+          <a-entity id="newRotationCentre" position="0 0 0">
+            <a-gltf-model src="#rails" position="0 0 -114"></a-gltf-model>
+        </a-entity>
 
-    // Draw line from current pos to x, y
-    ctx.lineTo(x, y);
+      <!-- <a-sky color="#FFECEC"></a-sky> -->
+      <a-entity id="ambi01" light="type: ambient; color: #F2FF02" position="0.55 0.7-8" visible=""></a-entity>
+      <a-entity id="ambi02" light="type: ambient; color: #F2FF02" position="-2 0.2 -6" visible=""></a-entity>
 
-    // Complete square draw to starting position
-    if (i === cornerPoints.length-1) ctx.lineTo(cornerPoints[0].x, cornerPoints[0].y);
-  }
-
-  // Make path to stroke
-  ctx.stroke();
-}
-
-// Detect code function 
-const detectCode = () => {
-  barcodeDetector.detect(video).then(codes => {
-    // If no codes exit function and clear canvas
-    if (codes.length === 0) return drawCodePath({});
-    
-    for (const barcode of codes)  {
-      console.log(barcode)
-      // Draw outline
-      drawCodePath(barcode);
+      <a-entity id="pnt01" light="type: point; intensity: 1; distance: 50; decay: 2; color: #F2FF02" position="0 1.5 -124" animation="property: position; to: 0 1.5 -10; dur: 7000; easing: linear; loop: true">
+      </a-entity>
       
-      // Code in seen set then exit loop 
-      if (seen.has(barcode.rawValue)) return;
+      <a-entity id="direct" light="type: directional; color: #FFF; intensity: 0.5" position="-23.67184 23.39363 -19.99693"></a-entity>
 
-      // Save barcode to window to use later on
-      // then push to the codes proxy
-      window.barcodeVal = barcode.rawValue;
-      codesProxy.push(barcode);
+      <a-entity id="aframeCamera" camera look-controls mouse-cursor>
+        <a-entity navclick id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.1 0.1 0.1"></a>
+    </a-entity>
+    </a-scene>
 
-    }
-  }).catch(err => {
-    console.error(err);
-  })
-}
+    <script>
+        const video = document.getElementById('camera');
+        const aframeCamera = document.getElementById('aframeCamera');
+        let tunnelCameraCentre = document.getElementById('newRotationCentre');
 
-// Run detect code function every 100 milliseconds
-setInterval(detectCode, 100);
+  
 
+        var constraints = {
+            audio: false,
+            video: {
+                facingMode: "environment",
+            }
+        };
+
+        
+        let treeCameraCentre = document.getElementById('newRotationCentre');
+
+        console.log("video: " + video);
+        console.log("aframe camera: "+ aframeCamera.getAttribute('position'));
+
+        let pos = aframeCamera.getAttribute('position');
+                let rot = aframeCamera.getAttribute('rotation');
+                // tunnelCameraCentre.setAttribute("rotation", "0 " +  (rot.y - 10) + " 0");
+                // tunnelCameraCentre.setAttribute("position", "0 " +  (pos.y - 5) + " 0")
+          
+        function cameraStart() {
+            
+            navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Oops. Something is broken.", error);
+            });
+        }
+
+        // Start the video stream when the window loads
+        window.addEventListener("load", cameraStart, false);
+
+       
+      
     </script>
   </body>
 </html>

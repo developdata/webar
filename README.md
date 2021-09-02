@@ -5,7 +5,7 @@ A-Frame can be used to develop AR projects, but at the moment only seems to work
 The QR code code uses the [Bar Code Detection API](https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API). This works on some mobile browsers and on a Mac on the chrome browser. It doesn't work on web browsers if you are using a Windows OS.
 
 ## index.html
-This project was developed from a [project I found on line](https://aframe.io/blog/webxr-ar-module/), you can see their [code on glitch](https://glitch.com/edit/#!/xr-spinosaurus?path=style.css%3A1%3A0)
+This will be different content depending on what I'm working on.
 
 ## dinosaure.html
 This file was developed from a [project I found on line](https://aframe.io/blog/webxr-ar-module/), you can see their [code on glitch](https://glitch.com/edit/#!/xr-spinosaurus?path=style.css%3A1%3A0). I made changes so the dinasaur will always appear close to where the person is pointing the camera. In VR mode, if you press the pink box the dinasuar will toggle to appear or disappear. If the camera postion has moved the dinasaur will appear near the new camera position when toggled back on.
@@ -21,8 +21,6 @@ This file can read a qr code and also uses A-Frame to show 3D objects through th
 
 A 3D rectanble will appear in the aqua sphere when a QR code with the data https://example.com/ is registered by the camera.
 
-## sandbox.html
-Tests with AR and QR codes and AI
 
 ## aframemodels.html
 This file is to try out 3D models in VR and work out the translations and animations
@@ -30,5 +28,11 @@ This file is to try out 3D models in VR and work out the translations and animat
 ## tunnel.html
 This file has the tunnel model for AR
 
+## rain.html
+Work in progress, a rainy AR
+
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
+
+## sandbox.html
+Tests with AR and QR codes and AI
