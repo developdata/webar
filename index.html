@@ -71,8 +71,7 @@
         
         let treeCameraCentre = document.getElementById('newRotationCentre');
 
-        console.log("video: " + video);
-        console.log("aframe camera: "+ aframeCamera.getAttribute('position'));
+        
 
         let pos = aframeCamera.getAttribute('position');
                 let rot = aframeCamera.getAttribute('rotation');
@@ -85,6 +84,9 @@
                 .getUserMedia(constraints)
                 .then(function(stream) {
                 video.srcObject = stream;
+
+                console.log("video: " + video);
+        console.log("aframe camera: "+ aframeCamera.getAttribute('position'));
             })
             .catch(function(error) {
                 console.error("Oops. Something is broken.", error);
