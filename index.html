@@ -34,14 +34,11 @@
         
         <a-assets>
             <a-asset-item id="rails" src="rails3.glb"></a-asset-item>
-            <!-- <a-asset-item id="test" src="test.glb"></a-asset-item> -->
           </a-assets>
         
-          <a-entity id="newRotationCentre" position="0 0 0" rotation="-11 0 0">
-            <a-gltf-model src="#rails" position="0 0 -114"  material="transparent: true;"></a-gltf-model>
+          <a-entity id="newRotationCentre" position="0 0 0">
+            <a-gltf-model src="#rails" position="0 0 -114"></a-gltf-model>
         </a-entity>
-        <!-- <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-        <a-gltf-model src="#test" position="0 0 -12" material="transparent: true;"></a-gltf-model> -->
 
       <!-- <a-sky color="#FFECEC"></a-sky> -->
       <a-entity id="ambi01" light="type: ambient; color: #F2FF02" position="0.55 0.7-8" visible=""></a-entity>
@@ -49,13 +46,8 @@
 
       <a-entity id="pnt01" light="type: point; intensity: 1; distance: 50; decay: 2; color: #F2FF02" position="0 1.5 -124" animation="property: position; to: 0 1.5 -10; dur: 7000; easing: linear; loop: true">
       </a-entity>
-
-      <a-entity id="pnt02" light="type: point; intensity: 1; distance: 50; decay: 2; color: #F2FF02" position="4 -12 -124" animation="property: position; to: 0 1.5 -10; dur: 7000; easing: linear; loop: true">
-      </a-entity>
       
       <a-entity id="direct" light="type: directional; color: #FFF; intensity: 0.5" position="-23.67184 23.39363 -19.99693"></a-entity>
-
-           <a-entity id="direct" light="type: directional; color: #FFF; intensity: 0.5" position="-23.67184 23.39363 -19.99693"></a-entity>
 
       <a-entity id="aframeCamera" camera look-controls mouse-cursor>
         <a-entity navclick id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.1 0.1 0.1"></a>
@@ -79,30 +71,25 @@
         
         let treeCameraCentre = document.getElementById('newRotationCentre');
 
-        
-
         let pos = aframeCamera.getAttribute('position');
-        let rot = aframeCamera.getAttribute('rotation');
+                let rot = aframeCamera.getAttribute('rotation');
                 // tunnelCameraCentre.setAttribute("rotation", "0 " +  (rot.y - 10) + " 0");
                 // tunnelCameraCentre.setAttribute("position", "0 " +  (pos.y - 5) + " 0")
           
-        // function cameraStart() {
+        function cameraStart() {
             
-        //     navigator.mediaDevices
-        //         .getUserMedia(constraints)
-        //         .then(function(stream) {
-        //         video.srcObject = stream;
+            navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then(function(stream) {
+                video.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Oops. Something is broken.", error);
+            });
+        }
 
-        //         console.log(video.srcObject);
-        // console.log(aframeCamera.getAttribute('position'));
-        //     })
-        //     .catch(function(error) {
-        //         console.error("Oops. Something is broken.", error);
-        //     });
-        // }
-
-        // // Start the video stream when the window loads
-        // window.addEventListener("load", cameraStart, false);
+        // Start the video stream when the window loads
+        window.addEventListener("load", cameraStart, false);
 
        
       
