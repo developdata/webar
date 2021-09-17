@@ -1,23 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>A-Frame Particle System Component Example</title>
-    <meta name="description" content="Hello, World!">
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script> 
+    <title>My A-Frame Scene</title>
+    <!-- <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> -->
+    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+
+    <style>
+      /* #{
+       color: rgba(0, 0, 0, 0.5);
+      } */
+    </style>
+
   </head>
   <body>
     <a-scene>
-      <!-- Particle system uses 'default' preset, setting custom colors. -->
-      <a-entity position="0 2.25 -15" particle-system="preset: rain; particleCount:600; accelerationSpread:1 0 1"></a-entity>
 
-      <a-sphere position="0 1.25 -1" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-box position="-1 0.5 1" rotation="0 45 0" width="1" height="1" depth="1"  color="#4CC3D9"></a-box>
-      <a-cylinder position="1 0.75 1" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
- 
-      <a-sky color="#000000"></a-sky>
+      <a-assets>
+        <!-- <img id="puddle" src="raindrop5.gif">
+        <img id="test" src="dots.gif"> -->
+       
+      </a-assets>
+
+      <!-- <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:10; color: #478cb9"></a-entity> -->
+      <a-entity>
+        <!-- <a-entity position="0 0.62052 -3.10762" rotation="0.301375800238813 3.257838023113861 -5.278660166540274"" geometry="primitive:plane;" material="shader:gif;src:#puddle; opacity: 0.6; transparent:true"  class="test"></a-entity> -->
+
+        <a-entity position="0.03652 0.62052 -3.10762" rotation="0.301375800238813 3.257838023113861 -5.278660166540274" "="" geometry="primitive: plane" material="shader: gif; src: #test; opacity: 1; transparent: true" class="test"></a-entity>
+       
+        <!-- material="opacity: 0.0; transparent: true" -->
+        <!-- <a-image src="#test" position="0 0.64 -3.10"></a-image> -->
+        <!-- <a-image src="#puddle" position="0 0.64 -3.0099" scale="1.24 1.24 1.24" material="" geometry=""></a-image> -->
+        
+      </a-entity>
+      
+    
+       <!-- <a-entity position="0 0.53242 -4" rotation="0.301375800238813 3.257838023113861 -5.278660166540274"" geometry="primitive:plane;" material="shader:gif;src:#puddle; opacity: 0.1; transparent:true"  class="test"></a-entity> -->
+       <!-- material="opacity: 0.0; transparent: true" -->
+      <a-sky color="#6EBAA7"></a-sky>
     </a-scene>
-  </body>
+  </body> 
 </html>

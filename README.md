@@ -2,7 +2,13 @@
 This folder has code for A-Frame augmented reality projects. 
 A-Frame can be used to develop AR projects, but at the moment only seems to work with Andriod phones and not on all browsers. It should work in Chrome and Samsung mobile browser.
 
-The QR code code uses the [Bar Code Detection API](https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API). This works on some mobile browsers and on a Mac on the chrome browser. It doesn't work on web browsers if you are using a Windows OS.
+## Resources
+These project use the following Libraries, API's and software
+
+- The QR code code uses the [Bar Code Detection API](https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API). This works on some mobile browsers and on a Mac on the chrome browser. It doesn't work on web browsers if you are using a Windows OS.
+- A-Frame
+- Blender
+- Gimp
 
 ## index.html
 This will be different content depending on what I'm working on.
@@ -26,7 +32,7 @@ A 3D rectanble will appear in the aqua sphere when a QR code with the data https
 This file is to try out 3D models in VR and work out the translations and animations
 
 ## tunnel.html
-This file has the tunnel model for AR
+This file has the tunnel model for AR. I'm playing around with the transparency of the 3D model and found these resources useful for getting the transparency from a blender model to work in A-Frame [transparency in A-Frame](https://stackoverflow.com/questions/62236739/a-frame-ignoring-3d-models-slightly-transparent-materials) and [glitch of it working](https://aframe-transparent-material.glitch.me/)
 
 ## rain.html
 Work in progress, a rainy AR
