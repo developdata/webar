@@ -1,44 +1,102 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
     <title>My A-Frame Scene</title>
-    <!-- <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script> -->
-    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!-- <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script> -->
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
 
-    <style>
-      /* #{
-       color: rgba(0, 0, 0, 0.5);
-      } */
-    </style>
+ 
 
   </head>
   <body>
-    <a-scene>
+    <script>
+      AFRAME.registerComponent("animate-png", {
+        init: function() {
+          // load the .pngs
+          let loader = new THREE.TextureLoader();
+          this.pngArray = []
+          this.pngArray.push(loader.load('images/drops01.png'))
+          this.pngArray.push(loader.load('images/drops02.png'))
+          this.pngArray.push(loader.load('images/drops03.png'))
+          this.pngArray.push(loader.load('images/drops04.png'))
+          this.pngArray.push(loader.load('images/drops05.png'))
+          this.pngArray.push(loader.load('images/drops06.png'))
+          this.pngArray.push(loader.load('images/drops07.png'))
+          this.pngArray.push(loader.load('images/drops08.png'))
+          this.pngArray.push(loader.load('images/drops09.png'))
+          this.pngArray.push(loader.load('images/drops10.png'))
+          this.pngArray.push(loader.load('images/drops11.png'))
+          this.pngArray.push(loader.load('images/drops12.png'))
+          this.pngArray.push(loader.load('images/drops13.png'))
+          this.pngArray.push(loader.load('images/drops14.png'))
+          this.pngArray.push(loader.load('images/drops15.png'))
+          this.pngArray.push(loader.load('images/drops16.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops18.png'))
+          this.pngArray.push(loader.load('images/drops19.png'))
+          this.pngArray.push(loader.load('images/drops20.png'))
+          this.pngArray.push(loader.load('images/drops021.png'))
+          this.pngArray.push(loader.load('images/drops022.png'))
+          console.log(this.pngArray)
+        //   this.pngArray.push(loader.load('https://i.imgur.com/I7PAB.jpg'))
+        //   this.pngArray.push(loader.load('https://i.imgur.com/HNluPrg.jpg'))
 
-      <a-assets>
+          this.el.addEventListener('loaded', e => {
+            let mesh = this.el.getObject3D("mesh")
+            this.material = mesh.material
+
+            var i = 0
+            this.id = setInterval(e => {
+              if (i >= this.pngArray.length) i = 0;
+              this.material.map = this.pngArray[i++]
+              this.material.needsUpdate = true
+            }, 500)
+          })
+        },
+        remove: function() {
+          clearInterval(this.id);
+          // free the memory
+          for (let i = 0; i < this.pngArray.length; i++) {
+            this.pngArray[i].dispose();
+          }
+        }
+      })
+
+    </script>
+    <a-scene>
+      <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:10; color: #478cb9"></a-entity> -->
+      <a-entity>
+      <a-plane position="1 0.5 -3" rotation="-84 0 0" scale=" 0.7 0.7 0.7" animate-png material="transparent:true"></a-plane>
+      <a-sky color="#6EBAA7"></a-sky>
+
+    </a-scene>
+    <!-- <a-scene>
+
+      <a-assets> -->
         <!-- <img id="puddle" src="raindrop5.gif">
         <img id="test" src="dots.gif"> -->
        
-      </a-assets>
+      <!-- </a-assets> -->
 
       <!-- <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:10; color: #478cb9"></a-entity> -->
-      <a-entity>
+      <!-- <a-entity> -->
         <!-- <a-entity position="0 0.62052 -3.10762" rotation="0.301375800238813 3.257838023113861 -5.278660166540274"" geometry="primitive:plane;" material="shader:gif;src:#puddle; opacity: 0.6; transparent:true"  class="test"></a-entity> -->
 
-        <a-entity position="0.03652 0.62052 -3.10762" rotation="0.301375800238813 3.257838023113861 -5.278660166540274" "="" geometry="primitive: plane" material="shader: gif; src: #test; opacity: 1; transparent: true" class="test"></a-entity>
+        <!-- <a-entity position="0.03652 0.62052 -3.10762" rotation="0.301375800238813 3.257838023113861 -5.278660166540274" "="" geometry="primitive: plane" material="shader: gif; src: #test; opacity: 1; transparent: true" class="test"></a-entity> -->
        
         <!-- material="opacity: 0.0; transparent: true" -->
         <!-- <a-image src="#test" position="0 0.64 -3.10"></a-image> -->
         <!-- <a-image src="#puddle" position="0 0.64 -3.0099" scale="1.24 1.24 1.24" material="" geometry=""></a-image> -->
         
-      </a-entity>
+      <!-- </a-entity> -->
       
     
        <!-- <a-entity position="0 0.53242 -4" rotation="0.301375800238813 3.257838023113861 -5.278660166540274"" geometry="primitive:plane;" material="shader:gif;src:#puddle; opacity: 0.1; transparent:true"  class="test"></a-entity> -->
        <!-- material="opacity: 0.0; transparent: true" -->
-      <a-sky color="#6EBAA7"></a-sky>
-    </a-scene>
+      <!-- <a-sky color="#6EBAA7"></a-sky> -->
+    <!-- </a-scene> -->
   </body> 
 </html>
