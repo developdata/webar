@@ -26,8 +26,8 @@
     <script>
       AFRAME.registerComponent("animate-png", {
         init: function() {
-          let positionArray = [-2.5, -2.4, -2,-1.8, -1.6, -1.4, -1.2, -1, -0.8, 0, 0.1, 0.2, 0.3, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3];
-          // load the .pngs
+          
+          {// load the .pngs
           let loader = new THREE.TextureLoader();
           this.pngArray = []
           this.pngArray.push(loader.load('images/drops01.png'))
@@ -50,22 +50,30 @@
           this.pngArray.push(loader.load('images/drops17.png'))
           this.pngArray.push(loader.load('images/drops17.png'))
           this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))}
 
-          this.el.addEventListener('loaded', e => {
-            let mesh = this.el.getObject3D("mesh")
-            this.material = mesh.material
+            var minX = -10;
+            var maxX = 10;
+            var minZ = -10;
+            var maxZ = -4;
+        this.el.addEventListener('loaded', e => {
+            let mesh = this.el.getObject3D("mesh");
+            this.material = mesh.material;
             var i = 0;
-            let positionArrayLength = positionArray.length;
+
             this.id = setInterval(e => {
 
-                var imagesNotShown = Math.floor(Math.random()* 5);
-         
+            var imagesNotShown = Math.floor(Math.random()* 5);
+
               if (i >= this.pngArray.length - imagesNotShown){
                 i = 0;
-                var newPositionX = Math.floor(Math.random() * positionArrayLength - 1);
-                var newPositionY = Math.floor(Math.random() * positionArrayLength - 1);
-                this.el.setAttribute('position', { x: positionArray[newPositionX] , y: -3.2, z: -6 });
+                var randomX = (Math.random() * (maxX - minX + 1) + minX).toFixed(2);
+                var newPositionX = Number(randomX);
+
+                var randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
+                var newPositionZ = Number(randomZ);
+
+                this.el.setAttribute('position', { x: newPositionX , y: -5, z: newPositionZ });
               } 
               console.log('getting new image')
               this.material.map = this.pngArray[i++]
@@ -102,7 +110,7 @@
 
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
-            <a-entity geometry="primitive: plane" position="0 0 -4" scale="100 100 1" material="color: #333; transparent: true; opacity: 0.5;" ></a-entity>
+            <a-entity geometry="primitive: plane" position="0 0 -1" scale="100 100 1" material="color: #333; transparent: true; opacity: 0.5;" ></a-entity>
         </a-entity>
 
     </a-scene>
