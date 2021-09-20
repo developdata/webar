@@ -34,9 +34,10 @@ This file is to try out 3D models in VR and work out the translations and animat
 ## tunnel.html
 This file has the tunnel model for AR. I'm playing around with the transparency of the 3D model and found these resources useful for getting the transparency from a blender model to work in A-Frame [transparency in A-Frame](https://stackoverflow.com/questions/62236739/a-frame-ignoring-3d-models-slightly-transparent-materials) and [glitch of it working](https://aframe-transparent-material.glitch.me/)
 
-## rain.html
+## rain.html rain2.html rain3.html
 This file uses A-Frame particle systemm to make rain and loads in png images to create an effect of rain hitting water. The png loader comes from [this stackoverflow question](https://stackoverflow.com/questions/58113667/animating-a-series-of-png-images-in-a-frame-ar-js) and the [fiddle for the answer](https://jsfiddle.net/Lwtzjnk9/1/)
 
+Each file has slightly different funcitonality. Rain doesn't have the AR added, rain2 does and has the code for click interactions, rain3 doesn't have the click interactions
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
 

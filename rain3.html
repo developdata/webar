@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <title>My A-Frame Scene</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+    <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+    <style>   
+        #camera {
+            opacity:1;
+            position: fixed;
+            background-size: 100% 100%;
+            top: 0; left: 0; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+        }
+    </style>
+ 
+
+  </head>
+  <body>
+    <script>
+      AFRAME.registerComponent("animate-png", {
+        init: function() {
+          let positionArray = [-2.5, -2.4, -2,-1.8, -1.6, -1.4, -1.2, -1, -0.8, 0, 0.1, 0.2, 0.3, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3];
+          // load the .pngs
+          let loader = new THREE.TextureLoader();
+          this.pngArray = []
+          this.pngArray.push(loader.load('images/drops01.png'))
+          this.pngArray.push(loader.load('images/drops02.png'))
+          this.pngArray.push(loader.load('images/drops03.png'))
+          this.pngArray.push(loader.load('images/drops04.png'))
+          this.pngArray.push(loader.load('images/drops05.png'))
+          this.pngArray.push(loader.load('images/drops06.png'))
+          this.pngArray.push(loader.load('images/drops07.png'))
+          this.pngArray.push(loader.load('images/drops08.png'))
+          this.pngArray.push(loader.load('images/drops09.png'))
+          this.pngArray.push(loader.load('images/drops10.png'))
+          this.pngArray.push(loader.load('images/drops11.png'))
+          this.pngArray.push(loader.load('images/drops12.png'))
+          this.pngArray.push(loader.load('images/drops13.png'))
+          this.pngArray.push(loader.load('images/drops14.png'))
+          this.pngArray.push(loader.load('images/drops15.png'))
+          this.pngArray.push(loader.load('images/drops16.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+          this.pngArray.push(loader.load('images/drops17.png'))
+
+          this.el.addEventListener('loaded', e => {
+            let mesh = this.el.getObject3D("mesh")
+            this.material = mesh.material
+            var i = 0;
+            let positionArrayLength = positionArray.length;
+            this.id = setInterval(e => {
+
+                var imagesNotShown = Math.floor(Math.random()* 5);
+         
+              if (i >= this.pngArray.length - imagesNotShown){
+                i = 0;
+                var newPositionX = Math.floor(Math.random() * positionArrayLength - 1);
+                var newPositionY = Math.floor(Math.random() * positionArrayLength - 1);
+                this.el.setAttribute('position', { x: positionArray[newPositionX] , y: -3.2, z: -6 });
+              } 
+              console.log('getting new image')
+              this.material.map = this.pngArray[i++]
+              this.material.needsUpdate = true
+            }, 110)
+          })
+        },
+        remove: function() {
+          clearInterval(this.id);
+          // free the memory
+          for (let i = 0; i < this.pngArray.length; i++) {
+            this.pngArray[i].dispose();
+          }
+        }
+      })
+
+    </script>
+
+    <video id="camera" autoplay playsinline></video>
+    <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
+    <a-scene vr-mode-ui="enabled: false">
+        <!-- <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #FFF; particleCount:1500; size: 1; dragValue:0.5; dragSpread:5; texture: ./images/rain.png"></a-entity> 
+       -->
+
+       <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
+
+        <a-plane position="-2 -2 -2" rotation="45 0 0" scale="2 2 2" animate-png="" material="transparent: true" geometry=""></a-plane>
+
+        <a-plane position="-2 -2 -2" rotation="45 0 0" scale="2 2 2" animate-png="" material="transparent: true" geometry=""></a-plane>
+
+
+        <a-entity id="aframeCamera" camera look-controls mouse-cursor>
+            <a-entity geometry="primitive: plane" position="0 0 -4" scale="100 100 1" material="color: #D3D3D3; transparent: true; opacity: 0.3;" ></a-entity>
+        </a-entity>
+
+    </a-scene>
+    <script>
+    const video = document.getElementById('camera');
+ 
+    var constraints = {
+        audio: false,
+        video: {
+            facingMode: "environment",
+        }
+    };
+      
+    function cameraStart() {
+        
+        navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(function(stream) {
+            video.srcObject = stream;
+        })
+        .catch(function(error) {
+            console.error("Oops. Something is broken.", error);
+        });
+    }
+
+    // Start the video stream when the window loads
+    window.addEventListener("load", cameraStart, false);
+</script>
+  </body> 
+</html>
