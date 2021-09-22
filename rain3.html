@@ -52,10 +52,10 @@
           this.pngArray.push(loader.load('images/drops17.png'))
           this.pngArray.push(loader.load('images/drops17.png'))}
 
-            var minX = -3;
-            var maxX = 3;
-            var minZ = -10;
-            var maxZ = -4;
+            var minX = -2;
+            var maxX = 2;
+            var minZ = -8;
+            var maxZ = -4.5;
         this.el.addEventListener('loaded', e => {
             let mesh = this.el.getObject3D("mesh");
             this.material = mesh.material;
@@ -137,7 +137,7 @@
     }
 
     // Start the video stream when the window loads
-    window.addEventListener("load", cameraStart, false);
+    // window.addEventListener("load", cameraStart, false);
 </script>
   </body> 
 </html>
