@@ -85,7 +85,7 @@
                         newPositionY = (newPositionZ / ratio);
                     } 
                     this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: newPositionZ });
-                    this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
+                    // this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
                 } 
               this.material.map = this.pngArray[i++]
               this.material.needsUpdate = true
@@ -109,12 +109,12 @@
    
        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain2.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
 
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true"  animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true"  animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
 
-        <!-- <a-box position="-0.00114 -0.0353 -4.32824" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box> -->
+        <a-box position="-0.00114 -0.0353 -4.32824" scale="0.5" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box>
 <!-- 
         <a-plane position="-2 -2 -2" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
 
