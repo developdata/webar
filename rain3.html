@@ -26,68 +26,67 @@
     <script>
       AFRAME.registerComponent("animate-png", {
         init: function() {
-          
-          {// load the .pngs
-          let loader = new THREE.TextureLoader();
-          this.pngArray = []
-          this.pngArray.push(loader.load('images/drops01.png'))
-          this.pngArray.push(loader.load('images/drops02.png'))
-          this.pngArray.push(loader.load('images/drops03.png'))
-          this.pngArray.push(loader.load('images/drops04.png'))
-          this.pngArray.push(loader.load('images/drops05.png'))
-          this.pngArray.push(loader.load('images/drops06.png'))
-          this.pngArray.push(loader.load('images/drops07.png'))
-          this.pngArray.push(loader.load('images/drops08.png'))
-          this.pngArray.push(loader.load('images/drops09.png'))
-          this.pngArray.push(loader.load('images/drops10.png'))
-          this.pngArray.push(loader.load('images/drops11.png'))
-          this.pngArray.push(loader.load('images/drops12.png'))
-          this.pngArray.push(loader.load('images/drops13.png'))
-          this.pngArray.push(loader.load('images/drops14.png'))
-          this.pngArray.push(loader.load('images/drops15.png'))
-          this.pngArray.push(loader.load('images/drops16.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))}
+            {// load the .pngs
+                let loader = new THREE.TextureLoader();
+                this.pngArray = []
+                this.pngArray.push(loader.load('images/drops01.png'))
+                this.pngArray.push(loader.load('images/drops02.png'))
+                this.pngArray.push(loader.load('images/drops03.png'))
+                this.pngArray.push(loader.load('images/drops04.png'))
+                this.pngArray.push(loader.load('images/drops05.png'))
+                this.pngArray.push(loader.load('images/drops06.png'))
+                this.pngArray.push(loader.load('images/drops07.png'))
+                this.pngArray.push(loader.load('images/drops08.png'))
+                this.pngArray.push(loader.load('images/drops09.png'))
+                this.pngArray.push(loader.load('images/drops10.png'))
+                this.pngArray.push(loader.load('images/drops11.png'))
+                this.pngArray.push(loader.load('images/drops12.png'))
+                this.pngArray.push(loader.load('images/drops13.png'))
+                this.pngArray.push(loader.load('images/drops14.png'))
+                this.pngArray.push(loader.load('images/drops15.png'))
+                this.pngArray.push(loader.load('images/drops16.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+            }
+            //minimum and maximum values for position, scale etc
+            let minX = -2;
+            let maxX = 2;
+            let minZ = -8;
+            let maxZ = -8.5;
+            let ratio = 1.5;
+            let maxScale = 2;
+            let minScale = 0.5;
 
-            var minX = -2;
-            var maxX = 2;
-            var minZ = -8;
-            var maxZ = -4.5;
-        this.el.addEventListener('loaded', e => {
-            let mesh = this.el.getObject3D("mesh");
-            let ratio = 1.1;
-            this.material = mesh.material;
-            var i = 0;
+            this.el.addEventListener('loaded', e => {
+                let mesh = this.el.getObject3D("mesh");
+                
+                this.material = mesh.material;
+                var i = 0;
 
-            this.id = setInterval(e => {
+                this.id = setInterval(e => {
+                    //change how many images in the array are shown, this is so the ripples are staggered and slightly random
+                 let imagesNotShown = Math.floor(Math.random()* 5);
+                //position, scale etc is only reset each time all the images have been seen
+                if (i >= this.pngArray.length - imagesNotShown){
+                    i = 0;
+                    //get a random x and z value between two values
+                    let randomX = (Math.random() * (maxX - minX + 1) + minX).toFixed(2);
+                    let newPositionX = Number(randomX);
 
-            var imagesNotShown = Math.floor(Math.random()* 5);
-
-              if (i >= this.pngArray.length - imagesNotShown){
-                i = 0;
-                //get a random x and z value between two values
-                var randomX = (Math.random() * (maxX - minX + 1) + minX).toFixed(2);
-                var newPositionX = Number(randomX);
-
-                var randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
-                var newPositionZ = Number(randomZ);
-
-                // create a relationship between the z and y position
-                var newPositionY;
-                if(newPositionZ !== 0){
-                    newPositionY = (newPositionZ / ratio);
-                 
-                } else {
-                    newPositionY = -5;
-                }
-
-                console.log(newPositionY.toFixed(2))
-
-                this.el.setAttribute('position', { x: newPositionX , y: -5, z: newPositionZ });
-              } 
+                    let randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
+                    let newPositionZ = Number(randomZ);
+                    let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)
+                    // create a relationship between the z and y position
+                    let newPositionY = -5;
+                    if(newPositionZ !== 0){
+                        newPositionY = (newPositionZ / ratio);
+                    } 
+                    this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: newPositionZ });
+                    this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
+                } 
               this.material.map = this.pngArray[i++]
               this.material.needsUpdate = true
             }, 110)
@@ -107,18 +106,21 @@
     <video id="camera" autoplay playsinline></video>
     <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
     <a-scene vr-mode-ui="enabled: false">
-        <!-- <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #FFF; particleCount:1500; size: 1; dragValue:0.5; dragSpread:5; texture: ./images/rain.png"></a-entity> 
-       -->
+   
+       <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain2.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
 
-       <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true"  animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
 
-        <a-plane position="-2 -1.5 -3" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
-
+        <!-- <a-box position="-0.00114 -0.0353 -4.32824" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box> -->
+<!-- 
         <a-plane position="-2 -2 -2" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
 
         <a-plane position="-2.4 -2.2 -4" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
 
-        <a-plane position="-1.6 -2.5 -4.5" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
+        <a-plane position="-1.6 -2.5 -4.5" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane> -->
 
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>

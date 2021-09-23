@@ -26,51 +26,70 @@
     <script>
       AFRAME.registerComponent("animate-png", {
         init: function() {
-          let possiblePositions = [-2,-1.8, -1.6, -1.4, -1.2, -1, -0.8, 0, 0.1, 0.2, 0.3, 1.1, 1.2, 1.3, 1.4];
-          // load the .pngs
-          let loader = new THREE.TextureLoader();
-          this.pngArray = []
-          this.pngArray.push(loader.load('images/drops01.png'))
-          this.pngArray.push(loader.load('images/drops02.png'))
-          this.pngArray.push(loader.load('images/drops03.png'))
-          this.pngArray.push(loader.load('images/drops04.png'))
-          this.pngArray.push(loader.load('images/drops05.png'))
-          this.pngArray.push(loader.load('images/drops06.png'))
-          this.pngArray.push(loader.load('images/drops07.png'))
-          this.pngArray.push(loader.load('images/drops08.png'))
-          this.pngArray.push(loader.load('images/drops09.png'))
-          this.pngArray.push(loader.load('images/drops10.png'))
-          this.pngArray.push(loader.load('images/drops11.png'))
-          this.pngArray.push(loader.load('images/drops12.png'))
-          this.pngArray.push(loader.load('images/drops13.png'))
-          this.pngArray.push(loader.load('images/drops14.png'))
-          this.pngArray.push(loader.load('images/drops15.png'))
-          this.pngArray.push(loader.load('images/drops16.png'))
-          this.pngArray.push(loader.load('images/drops17.png'))
-          this.pngArray.push(loader.load('images/drops18.png'))
-          this.pngArray.push(loader.load('images/drops19.png'))
-          this.pngArray.push(loader.load('images/drops20.png'))
-          this.pngArray.push(loader.load('images/drops21.png'))
-          this.pngArray.push(loader.load('images/drops22.png'))
-     
-        //   this.pngArray.push(loader.load('https://i.imgur.com/I7PAB.jpg'))
-        //   this.pngArray.push(loader.load('https://i.imgur.com/HNluPrg.jpg'))
+            {// load the .pngs
+                let loader = new THREE.TextureLoader();
+                this.pngArray = []
+                this.pngArray.push(loader.load('images/drops01.png'))
+                this.pngArray.push(loader.load('images/drops02.png'))
+                this.pngArray.push(loader.load('images/drops03.png'))
+                this.pngArray.push(loader.load('images/drops04.png'))
+                this.pngArray.push(loader.load('images/drops05.png'))
+                this.pngArray.push(loader.load('images/drops06.png'))
+                this.pngArray.push(loader.load('images/drops07.png'))
+                this.pngArray.push(loader.load('images/drops08.png'))
+                this.pngArray.push(loader.load('images/drops09.png'))
+                this.pngArray.push(loader.load('images/drops10.png'))
+                this.pngArray.push(loader.load('images/drops11.png'))
+                this.pngArray.push(loader.load('images/drops12.png'))
+                this.pngArray.push(loader.load('images/drops13.png'))
+                this.pngArray.push(loader.load('images/drops14.png'))
+                this.pngArray.push(loader.load('images/drops15.png'))
+                this.pngArray.push(loader.load('images/drops16.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+                this.pngArray.push(loader.load('images/drops17.png'))
+            }
+            //minimum and maximum values for position, scale etc
+            let minX = -2;
+            let maxX = 2;
+            let minZ = -8;
+            let maxZ = -8.5;
+            let ratio = 1.5;
+            let maxScale = 2;
+            let minScale = 0.5;
 
-          this.el.addEventListener('loaded', e => {
-            let mesh = this.el.getObject3D("mesh")
-            this.material = mesh.material
+            this.el.addEventListener('loaded', e => {
+                let mesh = this.el.getObject3D("mesh");
+                
+                this.material = mesh.material;
+                var i = 0;
 
-            var i = 0
-            this.id = setInterval(e => {
-              if (i >= this.pngArray.length){
-                i = 0;
-                var temp = Math.floor(Math.random() * 14);
-                this.el.setAttribute('position', { x: possiblePositions[temp] , y: -1, z: -3 });
-              } 
+                this.id = setInterval(e => {
+                    //change how many images in the array are shown, this is so the ripples are staggered and slightly random
+                 let imagesNotShown = Math.floor(Math.random()* 5);
+                //position, scale etc is only reset each time all the images have been seen
+                if (i >= this.pngArray.length - imagesNotShown){
+                    i = 0;
+                    //get a random x and z value between two values
+                    let randomX = (Math.random() * (maxX - minX + 1) + minX).toFixed(2);
+                    let newPositionX = Number(randomX);
 
+                    let randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
+                    let newPositionZ = Number(randomZ);
+                    let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)
+                    // create a relationship between the z and y position
+                    let newPositionY = -5;
+                    if(newPositionZ !== 0){
+                        newPositionY = (newPositionZ / ratio);
+                    } 
+                    this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: newPositionZ });
+                    this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
+                } 
               this.material.map = this.pngArray[i++]
               this.material.needsUpdate = true
-            }, 100)
+            }, 110)
           })
         },
         remove: function() {
@@ -83,53 +102,41 @@
       })
 
     </script>
-    <!-- <script>
-        AFRAME.registerComponent("navclick", {
-    init: function() {
-        // var data = this.data;
-        // alert('in init function');
-        var el = this.el;
-        el.addEventListener("click", () => {
-            alert('clicked');
-        });
-    }
-    });
-    </script> -->
+
     <video id="camera" autoplay playsinline></video>
     <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
     <a-scene vr-mode-ui="enabled: false">
-      <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500"></a-entity> 
-      
-      <!-- <a-plane position="-2 0.5 -3" rotation="-90 0 0" scale=" 0.7 0.7 0.7" animate-png material="transparent:true"></a-plane> -->
+   
+       <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain2.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
 
-      <a-plane position="-2 -1.5 -3" rotation="-90 0.027501974166279516 -0.6990085100596044" animate-png="" material="transparent: true" geometry=""></a-plane>
-      <!-- <a-box position="-2 0.5 -3" color="#ff0000" opacity="0.5" material=transparent: true"></a-box> -->
-      <!-- <a-sky color="#6EBAA7"></a-sky> -->
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true"  animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="2 2 2" material="transparent: true" animate-png></a-plane>
 
-      <a-entity id="aframeCamera" camera look-controls mouse-cursor>
-        <!-- <a-entity navclick id="refresh-button" geometry="primitive: box" material="color: pink" position="0 -1.2 -2" scale = "0.1 0.1 0.1"></a> -->
-    </a-entity>
+        <!-- <a-box position="-0.00114 -0.0353 -4.32824" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box> -->
+<!-- 
+        <a-plane position="-2 -2 -2" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
+
+        <a-plane position="-2.4 -2.2 -4" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
+
+        <a-plane position="-1.6 -2.5 -4.5" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane> -->
+
+
+        <a-entity id="aframeCamera" camera look-controls mouse-cursor>
+            <a-entity geometry="primitive: plane" position="0 0 -1" scale="100 100 1" material="color: #333; transparent: true; opacity: 0.5;" ></a-entity>
+        </a-entity>
 
     </a-scene>
     <script>
     const video = document.getElementById('camera');
-    const aframeCamera = document.getElementById('aframeCamera');
-    let tunnelCameraCentre = document.getElementById('newRotationCentre');
-
+ 
     var constraints = {
         audio: false,
         video: {
             facingMode: "environment",
         }
     };
-
-    
-    let treeCameraCentre = document.getElementById('newRotationCentre');
-
-    let pos = aframeCamera.getAttribute('position');
-            let rot = aframeCamera.getAttribute('rotation');
-            // tunnelCameraCentre.setAttribute("rotation", "0 " +  (rot.y - 10) + " 0");
-            // tunnelCameraCentre.setAttribute("position", "0 " +  (pos.y - 5) + " 0")
       
     function cameraStart() {
         
