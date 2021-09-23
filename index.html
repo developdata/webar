@@ -54,8 +54,8 @@
             //minimum and maximum values for position, scale etc
             let minX = -2;
             let maxX = 2;
-            let minZ = -8;
-            let maxZ = -8.5;
+            let minZ = -60;
+            let maxZ = -3;
             let ratio = 1.5;
             let maxScale = 2;
             let minScale = 0.5;
@@ -77,6 +77,7 @@
                     let newPositionX = Number(randomX);
 
                     let randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
+                    console.log(randomZ);
                     let newPositionZ = Number(randomZ);
                     let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)
                     // create a relationship between the z and y position
@@ -114,7 +115,7 @@
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true"  animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
 
-        <a-box position="-0.00114 -0.0353 -4.32824" scale="0.5" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box>
+        <!-- <a-box position="-0.00114 -0.0353 -4.32824" scale="0.5" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box> -->
 <!-- 
         <a-plane position="-2 -2 -2" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
 
