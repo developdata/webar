@@ -52,12 +52,12 @@
                 this.pngArray.push(loader.load('images/drops17.png'))
             }
             //minimum and maximum values for position, scale etc
-            let minX = -2;
-            let maxX = 2;
-            let minZ = -60;
+            let minX = -1.5;
+            let maxX = 1.5;
+            let minZ = -40;
             let maxZ = -3;
             let ratio = 1.5;
-            let maxScale = 2;
+            let maxScale = 1;
             let minScale = 0.5;
 
             this.el.addEventListener('loaded', e => {
@@ -100,32 +100,69 @@
             this.pngArray[i].dispose();
           }
         }
-      })
+      });
+
+
+      AFRAME.registerComponent("random-gltf-pos", {
+        init: function() {
+            this.el.addEventListener('loaded', e => {
+                let mesh = this.el.getObject3D("mesh");
+                
+                let max = 1;
+                let min = 0;
+
+                this.id = setInterval(e => {
+                    let randomX = (Math.random() * (max - min + 1) + min).toFixed(2);
+                    let newPositionX = Number(randomX);
+
+                    let randomY = (Math.random() * (max - min + 1) + min).toFixed(2);
+                    let newPositionY = Number(randomY);
+                    this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: -1 });
+                }, 2000)
+            })
+        },
+        remove: function() {
+          clearInterval(this.id);
+        }
+
+    });
 
     </script>
 
     <video id="camera" autoplay playsinline></video>
     <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
     <a-scene vr-mode-ui="enabled: false">
+
+        <a-assets>
+            <!-- <a-asset-item id="rainDrop" src="drop.glb"></a-asset-item> -->
+          </a-assets>
    
-       <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain2.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity> 
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain3.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity>  
 
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true"  animate-png></a-plane>
-        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="4 4 4" material="transparent: true" animate-png></a-plane>
+         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true"  animate-png></a-plane>
+        <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
 
-        <!-- <a-box position="-0.00114 -0.0353 -4.32824" scale="0.5" color="red" material="color: #ff000d" geometry="" rotation="0 39.98557860658989 1.11"></a-box> -->
-<!-- 
-        <a-plane position="-2 -2 -2" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
+        <!-- <a-circle position="-2 -1.5 -3" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.5"></a-circle> -->
 
-        <a-plane position="-2.4 -2.2 -4" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane>
-
-        <a-plane position="-1.6 -2.5 -4.5" rotation="45 0 0" scale="4 4 4" animate-png="" material="transparent: true" geometry=""></a-plane> -->
-
+        
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
-            <a-entity geometry="primitive: plane" position="0 0 -1" scale="100 100 1" material="color: #333; transparent: true; opacity: 0.5;" ></a-entity>
+
+          <!-- <a-sphere position="-2 -1.5 -3" material=" color: #00aaff; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.8"></a-sphere> -->
+
+            <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.4; metalness:1; " ></a-entity>
+
+
+            <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5"  scale="0.014 0.018 0.02"></a-sphere> -->
+
+            <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #00aaff; transparent: true; opacity: 0.5; metalness: 1" scale="0.01 0.015 0.02" geometry=""></a-sphere> -->
+
+            
+            
+            <!-- <a-box color="red" position="0 0 -3"></a-box> -->
+            <!-- <a-gltf-model src="#rainDrop" position="0 0 -1" rotation="0 -90 0" scale="0.3 0.3 0.3" material="transparent:true" random-gltf-pos></a-gltf-model> -->
         </a-entity>
 
     </a-scene>
