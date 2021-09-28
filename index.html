@@ -52,12 +52,12 @@
                 this.pngArray.push(loader.load('images/drops17.png'))
             }
             //minimum and maximum values for position, scale etc
-            let minX = -1.5;
-            let maxX = 1.5;
-            let minZ = -40;
+            let minX = -2;
+            let maxX = 2;
+            let minZ = -60;
             let maxZ = -3;
             let ratio = 1.5;
-            let maxScale = 1;
+            let maxScale = 1.5;
             let minScale = 0.5;
 
             this.el.addEventListener('loaded', e => {
@@ -77,7 +77,7 @@
                     let newPositionX = Number(randomX);
 
                     let randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
-                    console.log(randomZ);
+                    
                     let newPositionZ = Number(randomZ);
                     let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)
                     // create a relationship between the z and y position
@@ -86,7 +86,7 @@
                         newPositionY = (newPositionZ / ratio);
                     } 
                     this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: newPositionZ });
-                    // this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
+                    this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
                 } 
               this.material.map = this.pngArray[i++]
               this.material.needsUpdate = true
@@ -137,12 +137,14 @@
             <!-- <a-asset-item id="rainDrop" src="drop.glb"></a-asset-item> -->
           </a-assets>
    
-        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain3.png; size: 1; dragValue:0.5; dragSpread:5; "></a-entity>  
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain3.png; size: 2; dragValue:0.5; dragSpread:5; "></a-entity>  
 
          <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true"  animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
+        <a-plane position="-1 -1.5 -10" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
+        <a-plane position="0 -2 -20" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
 
         <!-- <a-circle position="-2 -1.5 -3" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.5"></a-circle> -->
 
@@ -152,7 +154,7 @@
 
           <!-- <a-sphere position="-2 -1.5 -3" material=" color: #00aaff; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.8"></a-sphere> -->
 
-            <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.4; metalness:1; " ></a-entity>
+            <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.5; metalness:1; " ></a-entity>
 
 
             <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5"  scale="0.014 0.018 0.02"></a-sphere> -->
