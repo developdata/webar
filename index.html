@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-    <title>My A-Frame Scene</title>
+    <title>Sometimes</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
     <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
@@ -131,65 +131,55 @@
       schema: {
         message: {type: 'string', default: 'Hello, World!'}
       },
-
       init: function () {
-        // console.log(this.data.message);
-        // let el = this.el;
-
-        // this.randomNumberForInterval;
+        //set values used to create each raindrop
         this.maxRandom = 500;
         this.minRandom = 1;
         this.maxRainDrops = 25;
         this.counter = 0;
-        this.maxRandomX = 0.8;
-        this.minRandomX = -0.8;
-        this.maxRandomY = 0.8;
-        this.minRandomY = -0.8;
-        // var ela = document.createElement('a-entity');
-        // ela.setAttribute('geometry', 'primitive:sphere');
-        // ela.setAttribute('position', '0 0 -1.05');
-        // ela.setAttribute('scale', '0.02 0.009 0.02');
-        // // ele.setAttribute('material', 'color', 'blue');
-
-        // ela.setAttribute('material', 'color: #00aaff; transparent: true; opacity: 0.5;')
-
-
-        
-        // // geometry="primitive: plane"
-        // this.el.appendChild(ela);
+        this.maxRandomX = 8;
+        this.minRandomX = -8;
+        this.maxRandomY = 8;
+        this.minRandomY = -8;
+        this.maxRandomScaleX = 10;
+        this.minRandomScaleX = 6;
+        this.maxRandomScaleY = 14;
+        this.minRandomScaleY = 8;
       },
       tick: function (time, timeDelta) {
-        let randomNumberForInterval = Math.floor(Math.random() * (this.maxRandom - this.minRandom + 1)) + this.minRandom;
-
-    
-
-        var randomXPos = Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX;
-        var randomYPos = Math.random() * (this.maxRandomY - this.minRandomY + 1) + this.minRandomY;
-        
           if(this.counter < this.maxRainDrops){
+            let randomNumberForInterval = Math.floor(Math.random() * (this.maxRandom - this.minRandom + 1)) + this.minRandom;
             
             if(randomNumberForInterval === 5){
-              console.log("counter: " + this.counter);
-              console.log("y position: " + randomYPos);
-              console.log("x position: " + randomXPos);
+              //the counter is checked against the maximum number of raindrops and incremented each time there is a new raindrop
               this.counter += 1;
-            
 
+              //get random position and scale for the new raindrop
+              let randomXPos = (Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX)/10;
+              let randomYPos = (Math.random() * (this.maxRandomY - this.minRandomY + 1) + this.minRandomY)/10;
+
+              randomXPos = randomXPos.toFixed(3);
+              randomYPos = randomYPos.toFixed(3);
+
+              let randomXScale = (Math.random() * (this.maxRandomScaleX - this.minRandomScaleX + 1)+ this.minRandomScaleX)/1000;
+              let randomYScale = (Math.random() * (this.maxRandomScaleY - this.minRandomScaleY + 1)+ this.minRandomScaleY)/1000;
+
+              randomXScale = randomXScale.toFixed(3);
+              randomYScale = randomYScale.toFixed(3);
+            
               var ela = document.createElement('a-entity');
               ela.setAttribute('geometry', 'primitive:sphere');
-              // ela.setAttribute('position', "'" + 0 + " 0 -1.05'");
               ela.setAttribute('position', {x: randomXPos, y: randomYPos, z: -1.05});
-              ela.setAttribute('scale', '0.02 0.009 0.009');
-              // ela.setAttribute('material', 'color: red;');
-
-              ela.setAttribute('material', 'color: #aaa; transparent: true; opacity: 0.4;');
+              ela.setAttribute('scale', {x: randomXScale, y: randomYScale, z: -0.005});
+              console.log('x: ' + randomXScale);
+              console.log('y: ' + randomYScale);
+       
+              ela.setAttribute('material', 'color: #aaa; transparent: true; opacity: 0.4; metalness:1;');
 
               this.el.appendChild(ela);
               
             }
           }
-          
-        
       }
 
     });
@@ -199,12 +189,8 @@
     <video id="camera" autoplay playsinline></video>
     <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
     <a-scene vr-mode-ui="enabled: false">
-
-        <a-assets>
-            <!-- <a-asset-item id="rainDrop" src="drop.glb"></a-asset-item> -->
-          </a-assets>
    
-        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain4.png; size: 2; dragValue:0.5; dragSpread:5; "></a-entity>  
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain4.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
 
          <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
@@ -212,9 +198,6 @@
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-1 -1.5 -10" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="0 -2 -20" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
-
-        <!-- <a-circle position="-2 -1.5 -3" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.5"></a-circle> -->
-
         
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
@@ -223,17 +206,8 @@
           
           <a-entity id="windowRain" rain-on-window></a-entity>
 
-          <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.5; metalness:1; " ></a-entity>
+          <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: grey; transparent: true; opacity: 0.4; metalness:0.3; " ></a-entity>
 
-
-            <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5"  scale="0.014 0.018 0.02"></a-sphere> -->
-
-            <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #00aaff; transparent: true; opacity: 0.5; metalness: 1" scale="0.01 0.015 0.02" geometry=""></a-sphere> -->
-
-            
-            
-            <!-- <a-box color="red" position="0 0 -3"></a-box> -->
-            <!-- <a-gltf-model src="#rainDrop" position="0 0 -1" rotation="0 -90 0" scale="0.3 0.3 0.3" material="transparent:true" random-gltf-pos></a-gltf-model> -->
         </a-entity>
 
     </a-scene>
