@@ -136,33 +136,54 @@
         // console.log(this.data.message);
         // let el = this.el;
 
-        this.randomNumber;
-        this.maxRandom = 10;
+        // this.randomNumberForInterval;
+        this.maxRandom = 500;
         this.minRandom = 1;
-        this.maxRainDrops = 5;
+        this.maxRainDrops = 25;
         this.counter = 0;
-        var ela = document.createElement('a-entity');
-        ela.setAttribute('geometry', 'primitive:sphere');
-        ela.setAttribute('position', '0 0 -1.05');
-        ela.setAttribute('scale', '0.02 0.009 0.02');
-        // ele.setAttribute('material', 'color', 'blue');
+        this.maxRandomX = 0.5;
+        this.minRandomX = -0.5;
+        // var ela = document.createElement('a-entity');
+        // ela.setAttribute('geometry', 'primitive:sphere');
+        // ela.setAttribute('position', '0 0 -1.05');
+        // ela.setAttribute('scale', '0.02 0.009 0.02');
+        // // ele.setAttribute('material', 'color', 'blue');
 
-        ela.setAttribute('material', 'color: #00aaff; transparent: true; opacity: 0.5;')
+        // ela.setAttribute('material', 'color: #00aaff; transparent: true; opacity: 0.5;')
 
 
         
-        // geometry="primitive: plane"
-        this.el.appendChild(ela);
+        // // geometry="primitive: plane"
+        // this.el.appendChild(ela);
       },
       tick: function (time, timeDelta) {
-        this.randomNumber = Math.floor(Math.random() * (this.maxRandom - this.minRandom + 1)) + this.minRandom;
+        let randomNumberForInterval = Math.floor(Math.random() * (this.maxRandom - this.minRandom + 1)) + this.minRandom;
+
+    
+
+        let randomXPos = Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX;
+        let randomYPos = Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX;
         
           if(this.counter < this.maxRainDrops){
-            if(this.randomNumber === 5){
+            
+            if(randomNumberForInterval === 5){
               console.log("counter: " + this.counter);
+              console.log("y position: " + randomYPos);
+              console.log("x position: " + randomXPos);
               this.counter += 1;
-              console.log(this.randomNumber);
+            
 
+              var ela = document.createElement('a-entity');
+              ela.setAttribute('geometry', 'primitive:sphere');
+              // ela.setAttribute('position', "'" + 0 + " 0 -1.05'");
+              ela.setAttribute('position', {x: randomXPos, y: randomYPos, z: -1.05});
+              ela.setAttribute('scale', '0.1 0.05 0.05');
+              // ela.setAttribute('scale', '0.01 0.009 0.01');
+              // ele.setAttribute('material', 'color', 'blue');
+
+              ela.setAttribute('material', 'color: #aaa; transparent: true; opacity: 0.3;');
+
+              this.el.appendChild(ela);
               
             }
           }
@@ -182,7 +203,7 @@
             <!-- <a-asset-item id="rainDrop" src="drop.glb"></a-asset-item> -->
           </a-assets>
    
-        <!-- <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain3.png; size: 2; dragValue:0.5; dragSpread:5; "></a-entity>   -->
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain3.png; size: 2; dragValue:0.5; dragSpread:5; "></a-entity>  
 
          <!-- <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
@@ -197,7 +218,7 @@
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
 
-          <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: #00aaff; transparent: true; opacity: 0.5;" ></a-sphere>
+          <!-- <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: #00aaff; transparent: true; opacity: 0.5;" ></a-sphere> -->
           
           <a-entity id="windowRain" rain-on-window></a-entity>
 
@@ -238,7 +259,7 @@
     }
 
     // Start the video stream when the window loads
-    // window.addEventListener("load", cameraStart, false);
+    window.addEventListener("load", cameraStart, false);
 </script>
   </body> 
 </html>
