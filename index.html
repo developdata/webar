@@ -127,6 +127,73 @@
 
     });
 
+    AFRAME.registerComponent('rain-on-window', {
+      schema: {
+        message: {type: 'string', default: 'Hello, World!'}
+      },
+
+      init: function () {
+        // console.log(this.data.message);
+        // let el = this.el;
+
+        // this.randomNumberForInterval;
+        this.maxRandom = 500;
+        this.minRandom = 1;
+        this.maxRainDrops = 25;
+        this.counter = 0;
+        this.maxRandomX = 0.8;
+        this.minRandomX = -0.8;
+        this.maxRandomY = 0.8;
+        this.minRandomY = -0.8;
+        // var ela = document.createElement('a-entity');
+        // ela.setAttribute('geometry', 'primitive:sphere');
+        // ela.setAttribute('position', '0 0 -1.05');
+        // ela.setAttribute('scale', '0.02 0.009 0.02');
+        // // ele.setAttribute('material', 'color', 'blue');
+
+        // ela.setAttribute('material', 'color: #00aaff; transparent: true; opacity: 0.5;')
+
+
+        
+        // // geometry="primitive: plane"
+        // this.el.appendChild(ela);
+      },
+      tick: function (time, timeDelta) {
+        let randomNumberForInterval = Math.floor(Math.random() * (this.maxRandom - this.minRandom + 1)) + this.minRandom;
+
+    
+
+        var randomXPos = Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX;
+        var randomYPos = Math.random() * (this.maxRandomY - this.minRandomY + 1) + this.minRandomY;
+        
+          if(this.counter < this.maxRainDrops){
+            
+            if(randomNumberForInterval === 5){
+              console.log("counter: " + this.counter);
+              console.log("y position: " + randomYPos);
+              console.log("x position: " + randomXPos);
+              this.counter += 1;
+            
+
+              var ela = document.createElement('a-entity');
+              ela.setAttribute('geometry', 'primitive:sphere');
+              // ela.setAttribute('position', "'" + 0 + " 0 -1.05'");
+              ela.setAttribute('position', {x: randomXPos, y: randomYPos, z: -1.05});
+              ela.setAttribute('scale', '0.02 0.009 0.009');
+              // ela.setAttribute('material', 'color: red;');
+
+              ela.setAttribute('material', 'color: #aaa; transparent: true; opacity: 0.4;');
+
+              this.el.appendChild(ela);
+              
+            }
+          }
+          
+        
+      }
+
+    });
+
     </script>
 
     <video id="camera" autoplay playsinline></video>
@@ -152,9 +219,11 @@
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
 
-          <!-- <a-sphere position="-2 -1.5 -3" material=" color: #00aaff; transparent: true; opacity: 0.5" geometry="primitive:circle;radius:0.5" radius="0.8"></a-sphere> -->
+          <!-- <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: red; " ></a-sphere> -->
+          
+          <a-entity id="windowRain" rain-on-window></a-entity>
 
-            <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.5; metalness:1; " ></a-entity>
+          <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: #333; transparent: true; opacity: 0.5; metalness:1; " ></a-entity>
 
 
             <!-- <a-sphere position="0 0 -1.04" material="side: double; color: #EF2D5E; transparent: true; opacity: 0.5"  scale="0.014 0.018 0.02"></a-sphere> -->
