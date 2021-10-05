@@ -140,14 +140,14 @@
         this.maxRainDrops = 25;
         this.counter = 0;
         //maximum and minimum values to create random posistion and scale for the raindrops on the screen
-        this.maxRandomX = 8;
-        this.minRandomX = -8;
-        this.maxRandomY = 8;
-        this.minRandomY = -8;
-        this.maxRandomScaleX = 14;
-        this.minRandomScaleX = 6;
-        this.maxRandomScaleY = 20;
-        this.minRandomScaleY = 1;
+        this.maxRandomX = 7;
+        this.minRandomX = -7;
+        this.maxRandomY = 7;
+        this.minRandomY = -7;
+        this.maxRandomScaleX = 16;
+        this.minRandomScaleX = 8;
+        this.maxRandomScaleY = 26;
+        this.minRandomScaleY = 18;
       },
       tick: function (time, timeDelta) {
           if(this.counter < this.maxRainDrops){
@@ -193,7 +193,7 @@
     <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
     <a-scene vr-mode-ui="enabled: false">
    
-        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:1500; texture: ./images/rain4.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:2000;maxAge:2; texture: ./images/rain5.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
 
          <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
@@ -237,7 +237,7 @@
     }
 
     // Start the video stream when the window loads
-    window.addEventListener("load", cameraStart, false);
+    // window.addEventListener("load", cameraStart, false);
 </script>
   </body> 
 </html>
