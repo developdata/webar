@@ -54,7 +54,7 @@
             //minimum and maximum values for position, scale etc
             let minX = -2;
             let maxX = 2;
-            let minZ = -10;
+            let minZ = -20;
             let maxZ = -3;
             let ratio = 1.5;
             let maxScale = 1.5;
@@ -133,18 +133,21 @@
       },
       init: function () {
         //set values used to create each raindrop
+        //these two values are used to pick a number between the max and minimum range, if the number is 5 then a new raindrop appears on the screen
         this.maxRandom = 500;
         this.minRandom = 1;
+        //These two values are to limit the amount of raindrops on the screen, the counter increments each time there is a new raindrop and when it reaches teh maxRainDrop value no more raindrops appear on the screen
         this.maxRainDrops = 25;
         this.counter = 0;
+        //maximum and minimum values to create random posistion and scale for the raindrops on the screen
         this.maxRandomX = 8;
         this.minRandomX = -8;
         this.maxRandomY = 8;
         this.minRandomY = -8;
-        this.maxRandomScaleX = 10;
+        this.maxRandomScaleX = 14;
         this.minRandomScaleX = 6;
-        this.maxRandomScaleY = 14;
-        this.minRandomScaleY = 8;
+        this.maxRandomScaleY = 20;
+        this.minRandomScaleY = 1;
       },
       tick: function (time, timeDelta) {
           if(this.counter < this.maxRainDrops){
@@ -153,10 +156,10 @@
             if(randomNumberForInterval === 5){
               //the counter is checked against the maximum number of raindrops and incremented each time there is a new raindrop
               this.counter += 1;
-
               //get random position and scale for the new raindrop
               let randomXPos = (Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX)/10;
               let randomYPos = (Math.random() * (this.maxRandomY - this.minRandomY + 1) + this.minRandomY)/10;
+              
 
               randomXPos = randomXPos.toFixed(3);
               randomYPos = randomYPos.toFixed(3);
