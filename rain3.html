@@ -195,6 +195,8 @@
 
       <a-assets>
         <audio id="rainAudio" src="audio/rain.mp3"></audio>
+        <img id="playing" src="images/playing.png">
+        <img id="notPlaying" src="images/notPlaying.png">
       </a-assets>
 
       <a-sound id="rainSounds" src="#rainAudio" autoplay="true" loop="true" volume="1"></a-sound>
@@ -210,7 +212,7 @@
         
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
-          <a-entity id="audio-button" geometry="primitive: box" material="color: pink" position="0 0 -0.5" scale = "0.2 0.2 0.2"></a-entity>
+          
 
 
           <!-- <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: red; " ></a-sphere> -->
@@ -218,6 +220,10 @@
           <a-entity id="windowRain" rain-on-window></a-entity>
 
           <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: grey; transparent: true; opacity: 0.4; metalness:0.3; " ></a-entity>
+
+          <a-entity id="audio-button" geometry="primitive: plane" material="src: #playing; transparent: true;" position="0.1825 -0.09376 -0.2" scale = "0.03 0.03 0.03"></a-entity>
+
+       
 
         </a-entity>
 
