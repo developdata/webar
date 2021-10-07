@@ -185,8 +185,6 @@
 
     });
 
-    
-
     </script>
 
     <video id="camera" autoplay playsinline></video>
@@ -194,9 +192,10 @@
     <!-- <a-scene vr-mode-ui="enabled: false"> -->
 
       <a-assets>
-        <audio id="rainAudio" src="audio/rain.mp3"></audio>
+        <!-- <audio id="rainAudio" src="audio/rain.mp3"></audio> -->
+        <audio id="rainAudio" loop="true" src="audio/rain.mp3"></audio>
         <img id="playing" src="images/playing.png">
-        <img id="notPlaying" src="images/notPlaying.png">
+        <!-- <img id="notPlaying" src="images/notPlaying.png"> -->
       </a-assets>
 
       <a-sound id="rainSounds" src="#rainAudio" autoplay="true" loop="true" volume="1"></a-sound>
@@ -250,28 +249,22 @@
         });
     }
 
-    // Start the video stream when the window loads
-    // window.addEventListener("load", cameraStart, false);
-    
-    //aduio play onclick
-
     let audiobutton = document.getElementById('audio-button');
 
-    //  = document.getElementById('rainSounds');
-     let rainPlay = document.querySelector('#rainAudio');
-
     audiobutton.addEventListener( 'click', function () {
+            let rainPlay = document.querySelector('#rainAudio');
             console.log('ckcik');
-            // rainPlay.play();
+            console.log(rainPlay.paused)
+            if(rainPlay.paused){
+              rainPlay.play();
+            }else {
+              rainPlay.pause();
+            }
             
         }, false );
 
-        window.addEventListener('touch', () => {
-          console.log('clicked')
-          rainPlay.play();
-    // document.getElementById('audio').muted = false
-    // document.getElementById('audio').play()
-  })
+        // Start the video stream when the window loads
+    window.addEventListener("load", cameraStart, false);
  
 </script>
   </body> 

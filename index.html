@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-    <title>Sometimes</title>
+    <title>My A-Frame Scene</title>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
     <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
@@ -54,11 +54,11 @@
             //minimum and maximum values for position, scale etc
             let minX = -2;
             let maxX = 2;
-            let minZ = -10;
+            let minZ = -20;
             let maxZ = -3;
             let ratio = 1.5;
-            let maxScale = 1.5;
-            let minScale = 0.5;
+            let maxScale = 8;
+            let minScale = 3;
 
             this.el.addEventListener('loaded', e => {
                 let mesh = this.el.getObject3D("mesh");
@@ -79,7 +79,7 @@
                     let randomZ = (Math.random() * (maxZ - minZ + 1) + minZ).toFixed(2);
                     
                     let newPositionZ = Number(randomZ);
-                    let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)
+                    let newScale = Math.floor(Math.random() * (maxScale - minScale + 1) + minScale)/10
                     // create a relationship between the z and y position
                     let newPositionY = -5;
                     if(newPositionZ !== 0){
@@ -133,10 +133,13 @@
       },
       init: function () {
         //set values used to create each raindrop
+        //these two values are used to pick a number between the max and minimum range, if the number is 5 then a new raindrop appears on the screen
         this.maxRandom = 500;
         this.minRandom = 1;
+        //These two values are to limit the amount of raindrops on the screen, the counter increments each time there is a new raindrop and when it reaches teh maxRainDrop value no more raindrops appear on the screen
         this.maxRainDrops = 25;
         this.counter = 0;
+        //maximum and minimum values to create random posistion and scale for the raindrops on the screen
         this.maxRandomX = 7;
         this.minRandomX = -7;
         this.maxRandomY = 7;
@@ -153,10 +156,10 @@
             if(randomNumberForInterval === 5){
               //the counter is checked against the maximum number of raindrops and incremented each time there is a new raindrop
               this.counter += 1;
-
               //get random position and scale for the new raindrop
               let randomXPos = (Math.random() * (this.maxRandomX - this.minRandomX + 1) + this.minRandomX)/10;
               let randomYPos = (Math.random() * (this.maxRandomY - this.minRandomY + 1) + this.minRandomY)/10;
+              
 
               randomXPos = randomXPos.toFixed(3);
               randomYPos = randomYPos.toFixed(3);
@@ -171,8 +174,6 @@
               ela.setAttribute('geometry', 'primitive:sphere');
               ela.setAttribute('position', {x: randomXPos, y: randomYPos, z: -1.05});
               ela.setAttribute('scale', {x: randomXScale, y: randomYScale, z: -0.005});
-              console.log('x: ' + randomXScale);
-              console.log('y: ' + randomYScale);
        
               ela.setAttribute('material', 'color: #aaa; transparent: true; opacity: 0.4; metalness:1;');
 
@@ -187,12 +188,19 @@
     </script>
 
     <video id="camera" autoplay playsinline></video>
-    <!-- <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse"> -->
-    <a-scene vr-mode-ui="enabled: false">
+    <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse">
+    <!-- <a-scene vr-mode-ui="enabled: false"> -->
 
-      
+      <a-assets>
+        <!-- <audio id="rainAudio" src="audio/rain.mp3"></audio> -->
+        <audio id="rainAudio" loop="true" src="audio/rain.mp3"></audio>
+        <img id="playing" src="images/playing.png">
+        <!-- <img id="notPlaying" src="images/notPlaying.png"> -->
+      </a-assets>
+
+      <a-sound id="rainSounds" src="#rainAudio" autoplay="true" loop="true" volume="1"></a-sound>
    
-        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:3000; maxAge:2; texture: ./images/rain5.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:2000;maxAge:2; texture: ./images/rain5.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
 
          <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
@@ -203,12 +211,18 @@
         
 
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
+          
+
 
           <!-- <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: red; " ></a-sphere> -->
           
           <a-entity id="windowRain" rain-on-window></a-entity>
 
           <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: grey; transparent: true; opacity: 0.4; metalness:0.3; " ></a-entity>
+
+          <a-entity id="audio-button" geometry="primitive: plane" material="src: #playing; transparent: true;" position="0.1825 -0.09376 -0.2" scale = "0.03 0.03 0.03"></a-entity>
+
+       
 
         </a-entity>
 
@@ -235,8 +249,23 @@
         });
     }
 
-    // Start the video stream when the window loads
+    let audiobutton = document.getElementById('audio-button');
+
+    audiobutton.addEventListener( 'click', function () {
+            let rainPlay = document.querySelector('#rainAudio');
+            console.log('ckcik');
+            console.log(rainPlay.paused)
+            if(rainPlay.paused){
+              rainPlay.play();
+            }else {
+              rainPlay.pause();
+            }
+            
+        }, false );
+
+        // Start the video stream when the window loads
     window.addEventListener("load", cameraStart, false);
+ 
 </script>
   </body> 
 </html>
