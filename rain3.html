@@ -52,12 +52,12 @@
                 this.pngArray.push(loader.load('images/drops17.png'))
             }
             //minimum and maximum values for position, scale etc
-            let minX = -2;
-            let maxX = 2;
+            let minX = -1;
+            let maxX = 1;
             let minZ = -20;
             let maxZ = -3;
             let ratio = 1.5;
-            let maxScale = 8;
+            let maxScale = 10;
             let minScale = 3;
 
             this.el.addEventListener('loaded', e => {
@@ -84,7 +84,7 @@
                     let newPositionY = -5;
                     if(newPositionZ !== 0){
                         newPositionY = (newPositionZ / ratio);
-                    } 
+                    }
                     this.el.setAttribute('position', { x: newPositionX , y: newPositionY, z: newPositionZ });
                     this.el.setAttribute('scale', { x: newScale , y: newScale, z: newScale });
                 } 
@@ -185,22 +185,40 @@
 
     });
 
+    AFRAME.registerComponent('play-audio', {
+      schema:{
+        clip:{type:'string', default: 'hi'}
+      },
+      init: function() {
+
+        let audioPlay = document.getElementById(this.data.clip);
+        let el = this.el;
+
+        el.addEventListener('click', function(){
+          if(audioPlay.paused){
+            audioPlay.play();
+            el.setAttribute('material', 'opacity: 0.2;');
+
+          }else {
+            audioPlay.pause();
+            el.setAttribute('material', 'opacity: 1;');
+          }
+        })
+      }
+    });
+
     </script>
 
     <video id="camera" autoplay playsinline></video>
-    <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse">
+    <a-scene vr-mode-ui="enabled: false" cursor="rayOrigin: mouse" raycaster="objects: #audio-button" >
     <!-- <a-scene vr-mode-ui="enabled: false"> -->
 
       <a-assets>
-        <!-- <audio id="rainAudio" src="audio/rain.mp3"></audio> -->
         <audio id="rainAudio" loop="true" src="audio/rain.mp3"></audio>
         <img id="playing" src="images/playing.png">
-        <!-- <img id="notPlaying" src="images/notPlaying.png"> -->
       </a-assets>
-
-      <a-sound id="rainSounds" src="#rainAudio" autoplay="true" loop="true" volume="1"></a-sound>
    
-        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:2000;maxAge:2; texture: ./images/rain5.png; size: 2; dragValue:0.1; dragSpread:5; "></a-entity>  
+        <a-entity position="0 2.25 -15" particle-system="preset: rain; maxAge:5; color: #AAA; particleCount:2000;maxAge:2; texture: ./images/rain5.png; size: 2; "></a-entity>  
 
          <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="-2 -1.5 -3" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
@@ -209,20 +227,15 @@
         <a-plane position="-1 -1.5 -10" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         <a-plane position="0 -2 -20" rotation="-105 0 0"  scale="1 1 1" material="transparent: true" animate-png></a-plane>
         
-
         <a-entity id="aframeCamera" camera look-controls mouse-cursor>
-          
-
 
           <!-- <a-sphere position="0 0.8 -1.05" scale="0.02 0.009 0.02" material="color: red; " ></a-sphere> -->
           
           <a-entity id="windowRain" rain-on-window></a-entity>
 
-          <a-entity id="audio-button" geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: grey; transparent: true; opacity: 0.4; metalness:0.3; " ></a-entity>
+          <a-entity geometry="primitive: plane" position="0 0 -1" scale="50 50 1" material="color: grey; transparent: true; opacity: 0.4; metalness:0.3; " ></a-entity>
 
-          <!-- <a-entity  geometry="primitive: plane" material="src: #playing; transparent: true;" position="0 0 -0.2" scale = "0.03 0.03 0.03"></a-entity> -->
-
-       
+          <a-entity play-audio="clip: rainAudio"  id="audio-button" geometry="primitive: plane" material="src: #playing; transparent: true; opacity:1" position="0 -0.12 -0.2" scale = "0.03 0.03 0.03"></a-entity>
 
         </a-entity>
 
@@ -249,22 +262,8 @@
         });
     }
 
-    let audiobutton = document.getElementById('audio-button');
-
-    audiobutton.addEventListener( 'click', function () {
-            let rainPlay = document.querySelector('#rainAudio');
-            console.log('ckcik');
-            console.log(rainPlay.paused)
-            if(rainPlay.paused){
-              rainPlay.play();
-            }else {
-              rainPlay.pause();
-            }
-            
-        }, false );
-
         // Start the video stream when the window loads
-    // window.addEventListener("load", cameraStart, false);
+    window.addEventListener("load", cameraStart, false);
  
 </script>
   </body> 
