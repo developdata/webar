@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Basic Scene</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link type="text/css" rel="stylesheet" href="styles/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <script type="module">
+        //to make the scene into AR need the AR button
+        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
+
+        let camera;
+        let scene;
+        let renderer;
+        let mesh;
+
+        init();
+        animate();
+
+        function init(){
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+
+            scene = new THREE.Scene();
+            
+            //add a camera, there are different types of cameras you can add
+            //The camera needs attributes for example the clipping plane and fov
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 40);
+            
+            //add a renderer, needed for rendering objects onto the screen
+
+            renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            //need to put in the code that this is an XR project
+            renderer.xr.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            //add a light
+            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+            light.position.set(0.5, 1, 0.25);
+            scene.add(light);
+
+            //add a mesh
+            const geometry = new THREE.BoxGeometry(0.3,0.3,0.3);
+            const material = new THREE.MeshBasicMaterial({color: 0x0000ff });
+            const cubeMesh = new THREE.Mesh(geometry, material);
+            scene.add(cubeMesh);
+            cubeMesh.position.z = -1;
+            cubeMesh.position.y = 0.5;
+
+            const geometry2 = new THREE.IcosahedronGeometry(0.1, 1);
+            const material2 = new THREE.MeshPhongMaterial({
+                color      :  new THREE.Color("rgb(226,35,213)"),
+                shininess  :  6,
+                shading    :  true,
+                transparent: 1,
+                opacity    : 0.8
+            });
+            
+            mesh = new THREE.Mesh(geometry2, material2);
+            mesh.position.set(0, 0, -0.5);
+            scene.add(mesh);
+
+            // const button = ARButton.createButton(renderer);
+            document.body.appendChild(ARButton.createButton(renderer));
+
+            window.addEventListener('resize', onWindowResize, false);
+
+        }
+
+        function animate(){
+            //this funciton sets up an animation loop fo rhte renderer
+            renderer.setAnimationLoop(render);
+        }
+
+        function render(){
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+    </script>
+
+</body>
+</html>
