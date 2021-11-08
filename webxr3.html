@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<link type="text/css" rel="stylesheet" href="styles/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 
 <body>
@@ -19,6 +20,8 @@
         let scene;
         let renderer;
         let mesh;
+        //need a controller for touch
+        let controller;
 
         init();
         animate();
@@ -48,26 +51,11 @@
             light.position.set(0.5, 1, 0.25);
             scene.add(light);
 
-            //add a mesh
-            const geometry = new THREE.BoxGeometry(0.3,0.3,0.3);
-            const material = new THREE.MeshBasicMaterial({color: 0x0000ff });
-            const cubeMesh = new THREE.Mesh(geometry, material);
-            scene.add(cubeMesh);
-            cubeMesh.position.z = -1;
-            cubeMesh.position.y = 0.5;
-
-            const geometry2 = new THREE.IcosahedronGeometry(0.1, 1);
-            const material2 = new THREE.MeshPhongMaterial({
-                color      :  new THREE.Color("rgb(226,35,213)"),
-                shininess  :  6,
-                shading    :  true,
-                transparent: 1,
-                opacity    : 0.8
-            });
-            
-            mesh = new THREE.Mesh(geometry2, material2);
-            mesh.position.set(0, 0, -0.5);
-            scene.add(mesh);
+            //The controller has an xr contoller added to it that understands the coordiantes of the phone screen
+            controller = renderer.xr.getController(0);
+            //The select event listener is triggered when someone touches the phone screen
+            controller.addEventListener('select', onSelect);
+            scene.add(controller);
 
             // const button = ARButton.createButton(renderer);
             document.body.appendChild(ARButton.createButton(renderer));
@@ -80,9 +68,56 @@
         }
 
         function render(){
-            mesh.rotation.y = mesh.rotation.y - 0.01;
+       
             renderer.render(scene, camera);
         }
+
+
+        let lastClick = 0;
+const ele = document.querySelector('div');
+ele.addEventListener('touchstart', function(e) {
+  e.preventDefault(); // to disable browser default zoom on double tap
+  let date = new Date();
+  let time = date.getTime();
+  const time_between_taps = 200; // 200ms
+  if (time - lastClick < time_between_taps) {
+    // do stuff
+    console.log("done");
+  }
+  lastClick = time;
+})
+        function onSelect(){
+            console.log('slect');
+            //first part is to check for a double tap by checking the time between taps
+            let date = new Date();
+            let time = date.getTime();
+            const time_between_taps = 300; // 300ms
+            if (time - lastClick < time_between_taps) {
+                // on double click remove all the meshes that have been added by tapping
+                console.log("double click");
+                for (let i = scene.children.length - 1; i >= 0; i--) {
+                    if(scene.children[i].type === "Mesh")
+                        scene.remove(scene.children[i]);
+                }
+            } else {
+                const geometry = new THREE.ConeGeometry(0.1, 0.2, 32);
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xffffff * Math.random(),
+                    shininess: 6,
+                    flatShading: true,
+                    transparent: 1,
+                    opacity: 0.8
+                });
+
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(0,0,-0.6).applyMatrix4(controller.matrixWorld);
+                mesh.quaternion.setFromRotationMatrix(controller.matrixWorld);
+                scene.add(mesh);
+            }
+            lastClick = time;
+            
+        }
+
 
         function onWindowResize() {
 			camera.aspect = window.innerWidth / window.innerHeight;
