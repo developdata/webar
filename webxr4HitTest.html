@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Basic Scene</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link type="text/css" rel="stylesheet" href="styles/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+
+<body>
+
+    <script type="module">
+        //to make the scene into AR need the AR button
+        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
+
+        let camera;
+        let scene;
+        let renderer;
+        // let mesh;
+        //need a controller for touch
+        let controller;
+        let reticle;
+
+        let hitTestSource = null;
+        let localSpace = null;
+        let hitTestSourceInitialized = false;
+
+        let lastClick = 0;
+
+        init();
+        animate();
+
+        function init(){
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+
+            scene = new THREE.Scene();
+            
+            //add a camera, there are different types of cameras you can add
+            //The camera needs attributes for example the clipping plane and fov
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 40);
+            
+            //add a renderer, needed for rendering objects onto the screen
+
+            renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            //need to put in the code that this is an XR project
+            renderer.xr.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            //add a light
+            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+            light.position.set(0.5, 1, 0.25);
+            scene.add(light);
+
+            controller = renderer.xr.getController(0);
+            controller.addEventListener('select', onSelect);
+            scene.add(controller);
+
+            addReticleToScene();
+           
+            const button = ARButton.createButton(renderer, {
+                requiredFeatures: ["hit-test"]
+            });
+
+            document.body.appendChild(button);
+
+            // document.body.appendChild(ARButton.createButton(renderer));
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function animate(){
+            //this funciton sets up an animation loop fo rhte renderer
+            renderer.setAnimationLoop(render);
+        }
+
+        function render(timestamp, frame){
+
+            if(frame){
+                //first get hit test source, in this case the centre of the phone screen, from the origin a ray will be cast to look for intersections with objects
+                if(!hitTestSourceInitialized){
+                    initializeHitTestSource();
+                    
+                }
+                //then cast the hit test and get a point of intersection between the ray from the origin and the plain its hitting, a wall of the floor
+                if(hitTestSourceInitialized){
+                    //The result of calling gethitTestResults is an array, as there can be multiple surfaces hit, the first result in the array is the closest to the camera
+                    const hitTestResults  = frame.getHitTestResults(hitTestSource); 
+
+                    if(hitTestResults.length > 0){
+                        const hit = hitTestResults[0]; //result closest to the camera
+                        //a pose represents the position and orientation of a point on a surface. This point won't change even if the camera moves as its getting it in the local space
+                        const pose = hit.getPose(localSpace);
+                        reticle.visible = true;
+
+                        reticle.matrix.fromArray(pose.transform.matrix);
+                    } else {
+                        //if there's not hit result there's not surface so the reticle should be invisible again
+                        reticle.visible = false;
+                    }
+                }
+                renderer.render(scene, camera);
+            }
+        }
+
+        async function initializeHitTestSource(){
+            const session = renderer.xr.getSession();
+
+            //need to get two reference spaces, the viewer and local reference space, a reference space represents a coordinate system. In the viewer space 0,0,0 is always at the centre of the phone, local reference space if in reference to that point
+
+            const viewSpace = await session.requestReferenceSpace("viewer");
+            hitTestSource = await session.requestHitTestSource({space: viewSpace});
+            
+            localSpace = await session.requestReferenceSpace("local");
+
+            hitTestSourceInitialized = true;
+
+        }
+
+        function addReticleToScene(){
+            const geometry = new THREE.RingBufferGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2);
+            const material = new THREE.MeshBasicMaterial();
+
+            reticle = new THREE.Mesh(geometry, material);
+
+            reticle.matrixAutoUpdate = false;
+            reticle.visisble = false;
+            scene.add(reticle);
+        }
+
+        function onSelect(){
+            //if there is a surface the reticle is visible so that check can be used for placing an object
+            if(reticle.visible){
+                let date = new Date();
+                let time = date.getTime();
+                const time_between_taps = 300; // 300ms
+                if (time - lastClick < time_between_taps) {
+                    // on double click remove all the meshes that have been added by tapping
+                    console.log("double click");
+                    for (let i = scene.children.length - 1; i >= 0; i--) {
+                        if(scene.children[i].type === "Mesh")
+                            scene.remove(scene.children[i]);
+                    }
+                } else {
+                    const geometry = new THREE.CylinderBufferGeometry(0, 0.05, 0.2, 32);
+                    const material = new THREE.MeshPhongMaterial({
+                        color: 0xffffff * Math.random()
+                    });
+                    const mesh = new THREE.Mesh(geometry, material);
+
+                    //set the position and rotation of the mesh to match the position of the reticle
+                    mesh.position.setFromMatrixPosition(reticle.matrix);
+                    mesh.quaternion.setFromRotationMatrix(reticle.matrix);
+
+                    scene.add(mesh);
+                }
+                lastClick = time;
+            }
+        }// END OF ONSELECT FUNCTION
+
+        function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+    </script>
+
+</body>
+</html>

@@ -41,12 +41,13 @@ Each file has slightly different funcitonality. Rain doesn't have the AR added, 
 ## tests
 This file contains code I've used for testing and other code that might no longer be in one of the html files.
 
-## webxr1.html webxr2.html webxr3.html
+## webxr1Basic.html webxr2Animation.html webxr3TouchEvent.html, webxr4HitTest.html
 These files are my workings from the Udemy course Intro to Augmented Reality on the Web: WebXR and Three.js
 
-webxr1.html is the basics of getting AR to work on iOS and Android using WebXR api. 
-Webxr2.html is getting objects into the scene, and simple animations.
-webxr3.html is adding touch events. On single click a mesh appears on the screen, on a double click all the added meshes are removed
+webxr1Basic.html is the basics of getting AR to work on iOS and Android using WebXR api. 
+Webxr2Animation.html is getting objects into the scene, and simple animations.
+webxr3TouchEvent.html is adding touch events. On single click a mesh appears on the screen, on a double click all the added meshes are removed
+webxr4HitTest.html adds the code to check for surfaces using a hit test, adds an object ot show the surface has been found, then you can click to add an object to that point. Double clicking removes all the meshes
 
 ## sandbox.html
 Tests with AR and QR codes and AI
