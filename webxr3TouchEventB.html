@@ -53,10 +53,12 @@
 
             //The controller has an xr contoller added to it that understands the coordiantes of the phone screen
             controller = renderer.xr.getController(0);
-            console.log(renderer.xr.getController(0))
-            console.log(renderer.xr.getController(1))
+            // console.log(renderer.xr.getController(0))
+            // console.log(renderer.xr.getController(1))
             //The select event listener is triggered when someone touches the phone screen
             controller.addEventListener('select', onSelect);
+            controller.addEventListener('selectstart', onStart);
+            controller.addEventListener('selectend', onEnd);
             scene.add(controller);
 
             // const button = ARButton.createButton(renderer);
@@ -75,22 +77,12 @@
         }
 
 
-        let lastClick = 0;
+        // let lastClick = 0;
+        let checkSwipe = false;
 
-        function onSelect(){
+        function onSelect(event){
             console.log('slect');
-            //first part is to check for a double tap by checking the time between taps
-            let date = new Date();
-            let time = date.getTime();
-            const time_between_taps = 300; // 300ms
-            if (time - lastClick < time_between_taps) {
-                // on double click remove all the meshes that have been added by tapping
-                console.log("double click");
-                for (let i = scene.children.length - 1; i >= 0; i--) {
-                    if(scene.children[i].type === "Mesh")
-                        scene.remove(scene.children[i]);
-                }
-            } else {
+            if(!checkSwipe){
                 const geometry = new THREE.ConeGeometry(0.1, 0.2, 32);
                 const material = new THREE.MeshPhongMaterial({
                     color: 0xffffff * Math.random(),
@@ -105,8 +97,44 @@
                 mesh.quaternion.setFromRotationMatrix(controller.matrixWorld);
                 scene.add(mesh);
             }
-            lastClick = time;
+                checkSwipe = false;
+        
             
+        }
+
+        let startX;
+        let endX;
+        function onStart(event){
+            console.log('in start')
+            // console.log(event.target.position.x);
+            startX = event.target.position.x;
+            // startX = -0.02;
+            startX = startX.toFixed(2);
+            console.log(startX)
+        }
+
+        function onEnd(event){
+            console.log('in end');
+            // console.log(event.target.position.x);
+            endX = event.target.position.x;
+            // endX = 0.03;
+            endX = endX.toFixed(2);
+            console.log(endX)
+
+   
+
+            let percentageChange = ((startX - endX)/startX)*100
+            console.log('percentage change: ' + percentageChange);
+
+            if(percentageChange > 150){
+                console.log('do something on swipe')
+                checkSwipe = true;
+                for (let i = scene.children.length - 1; i >= 0; i--) {
+                    if(scene.children[i].type === "Mesh")
+                        scene.remove(scene.children[i]);
+                }
+            }
+
         }
 
 
