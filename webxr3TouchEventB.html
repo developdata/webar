@@ -96,8 +96,9 @@
                 mesh.position.set(0,0,-0.6).applyMatrix4(controller.matrixWorld);
                 mesh.quaternion.setFromRotationMatrix(controller.matrixWorld);
                 scene.add(mesh);
-            }
                 checkSwipe = false;
+            }
+                
         
             
         }
@@ -133,6 +134,8 @@
                     if(scene.children[i].type === "Mesh")
                         scene.remove(scene.children[i]);
                 }
+            } else {
+
             }
 
         }
