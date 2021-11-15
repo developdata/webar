@@ -106,21 +106,23 @@
         let startX;
         let endX;
         function onStart(event){
-            console.log('in start')
+            console.log('in start: ')
+            console.log(event.target.position)
             // console.log(event.target.position.x);
             startX = event.target.position.x;
             // startX = -0.02;
             startX = startX.toFixed(2);
-            console.log(startX)
+            // console.log(startX)
         }
 
         function onEnd(event){
             console.log('in end');
+            console.log(event.target.position)
             // console.log(event.target.position.x);
             endX = event.target.position.x;
             // endX = 0.03;
             endX = endX.toFixed(2);
-            console.log(endX)
+            // console.log(endX)
 
    
 
