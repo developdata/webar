@@ -108,7 +108,7 @@
         function onStart(event){
             console.log('in start: ')
             console.log(event.target.position)
-            // console.log(event.target.position.x);
+            console.log('x:' + event.target.position.x);
             startX = event.target.position.x;
             // startX = -0.02;
             startX = startX.toFixed(2);
@@ -118,18 +118,21 @@
         function onEnd(event){
             console.log('in end');
             console.log(event.target.position)
-            // console.log(event.target.position.x);
+            console.log('x: '+ event.target.position.x);
             endX = event.target.position.x;
             // endX = 0.03;
             endX = endX.toFixed(2);
             // console.log(endX)
 
+            //  Math.abs(a - b)
    
+            let absoluteDifference = Math.abs(startX - endX);
 
-            let percentageChange = ((startX - endX)/startX)*100
-            console.log('percentage change: ' + percentageChange);
+            console.log(absoluteDifference);
+            // let percentageChange = ((startX - endX)/startX)*100
+            // console.log('percentage change: ' + percentageChange);
 
-            if(percentageChange > 20){
+            if(absoluteDifference > 0.05){
                 console.log('do something on swipe')
                 checkSwipe = true;
                 for (let i = scene.children.length - 1; i >= 0; i--) {
