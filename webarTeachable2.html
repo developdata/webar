@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Basic Scene</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<link type="text/css" rel="stylesheet" href="styles/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+
+<body>
+
+    <script type="module">
+        //to make the scene into AR need the AR button
+        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
+
+        let camera;
+        let scene;
+        let renderer;
+        let mesh;
+        let loader;
+        let model;
+
+        let degrees = 0;
+
+        init();
+        animate();
+
+        function init(){
+            const container = document.createElement('div');
+            document.body.appendChild(container);
+
+            scene = new THREE.Scene();
+            
+            //add a camera, there are different types of cameras you can add
+            //The camera needs attributes for example the clipping plane and fov
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.01, 40);
+            
+            //add a renderer, needed for rendering objects onto the screen
+
+            renderer = new THREE.WebGLRenderer({antialias:true, alpha: true});
+
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            //need to put in the code that this is an XR project
+            renderer.xr.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            //add a light
+            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+            light.position.set(0.5, 1, 0.25);
+            scene.add(light);
+
+            const modelUrl = "models/space.gltf";
+            loader = new THREE.GLTFLoader();
+
+            loader.load(
+                modelUrl,
+                function(gltf){
+                    model = gltf.scene;
+                    console.log(model);
+                    // model.position.y = 5;
+                    model.position.z = -8;
+                    scene.add(model); 
+                },
+                function(xhr){
+                    console.log(xhr);
+                },
+                function(error){
+                    console.log(error);
+                } );
+
+                // const session = await navigator.xr.requestSession("immersive-ar", {
+                //     requiredFeatures: ["camera-access"],
+                // });
+                const button = ARButton.createButton(renderer, {
+                    requiredFeatures: ["camera-access"]
+                });
+
+                console.log('see what session is');
+                console.log(button);
+
+            //need a loader object in three.js, in this case a gltf loader object
+
+            // const button = ARButton.createButton(renderer);
+            document.body.appendChild(ARButton.createButton(renderer));
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function animate(){
+            //this funciton sets up an animation loop fo rhte renderer
+            renderer.setAnimationLoop(render);
+        }
+
+        function render(frame){
+            // console.log(frame)
+            rotateModel();
+            renderer.render(scene, camera);
+        }
+
+        function rotateModel(){
+            if (model !== undefined) {
+                // model.rotation.y = model.rotation.y - 0.01;
+                degrees += 0.1;
+                model.rotation.y = THREE.Math.degToRad(degrees);
+            }
+        }
+
+        function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+		}
+    </script>
+
+</body>
+</html>
